@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <com.lingganhezi.myapp.ui.Topbar
+        style="@style/Topbar"
+        app:title="@string/registe_topbar_titile" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingLeft="@dimen/login_registe_padding"
+        android:paddingRight="@dimen/login_registe_padding" >
+
+        <ImageView
+            android:layout_width="@dimen/login_logo_size"
+            android:layout_height="@dimen/login_logo_size"
+            android:src="@drawable/logo" 
+            android:scaleType="fitCenter"/>
+
+        <EditText
+            android:id="@+id/editText_email"
+            style="@style/LoginEditor"
+            android:hint="@string/registe_email"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/editText_password"
+            style="@style/LoginEditor"
+            android:hint="@string/login_password"
+            android:inputType="textPassword"
+            android:password="true" />
+
+        <Button
+            android:id="@+id/btn_registe"
+            style="@style/LoginButton"
+            android:layout_marginTop="50dp"
+            android:text="@string/registe_registe" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/registe_hasaccount"
+                style="@style/LoginFunction"
+                android:text="@string/registe_hasaccount" />
+
+            <!-- 用来占位 -->
+            <TextView
+                style="@style/LoginFunction"
+                android:visibility="invisible"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

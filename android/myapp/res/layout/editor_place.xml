@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:abstractWheelView="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <antistatic.spinnerwheel.WheelVerticalView
+        android:id="@+id/editor_place_province"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        abstractWheelView:selectionDivider="@color/default_blue_color"
+        abstractWheelView:selectionDividerActiveAlpha="180"
+        abstractWheelView:selectionDividerDimmedAlpha="180" />
+
+    <antistatic.spinnerwheel.WheelVerticalView
+        android:id="@+id/editor_editor"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        abstractWheelView:selectionDivider="@color/default_blue_color"
+        abstractWheelView:selectionDividerActiveAlpha="180"
+        abstractWheelView:selectionDividerDimmedAlpha="180" />
+
+</LinearLayout>

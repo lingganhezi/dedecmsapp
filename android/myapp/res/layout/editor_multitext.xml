@@ -1,0 +1,10 @@
+<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/editor_editor"
+    style="@style/EditText"
+    android:singleLine="false"
+    android:lines="5"
+    android:gravity="left|top"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    />

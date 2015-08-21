@@ -1,0 +1,9 @@
+<antistatic.spinnerwheel.WheelVerticalView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:abstractWheelView="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/editor_editor"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    abstractWheelView:selectionDivider="@color/default_blue_color"
+    abstractWheelView:selectionDividerActiveAlpha="180"
+    abstractWheelView:selectionDividerDimmedAlpha="180" />

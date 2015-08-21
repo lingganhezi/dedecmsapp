@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">myapp</string>
+
+    <!-- 通用 -->
+    <string name="cannel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="exit_commit">再按一次，退出</string>
+    <string name="sex_unknow">保密</string>
+    <string name="sex_man">男</string>
+    <string name="sex_women">女</string>
+
+    <!-- 文章 -->
+    <string name="article_topbar_title">发现</string>
+
+    <!-- error -->
+    <string name="error_networktimeout">网络访问超时，请检查网络连接</string>
+    <string name="error_unknowhost">找不到服务器，请检查DNS配置</string>
+    <string name="error_unknow">发生未知错误</string>
+    <string name="error_filenotfound">找不到目标文件</string>
+    <string name="error_io">发生读写错误</string>
+    <string name="error_notaccess">没有权限进行此操作</string>
+
+    <!-- 登录 -->
+    <string name="login_topbar_titile">登录</string>
+    <string name="login_username">用户名</string>
+    <string name="login_password">密码</string>
+    <string name="login_login">登录</string>
+    <string name="login_forgotpassword">忘记密码？</string>
+    <string name="login_registe">注册</string>
+    <string name="login_not_logined">你还没登陆呢</string>
+
+    <!-- 注册 -->
+    <string name="registe_topbar_titile">注册</string>
+    <string name="registe_registe">注册</string>
+    <string name="registe_email">Email</string>
+    <string name="registe_hasaccount">有账号？</string>
+    <string name="registe_faild">注册失败</string>
+
+    <!-- 忘记密码 -->
+    <string name="forgotpassword_topbar_titile">找回密码</string>
+    <string name="forgotpassword_email">注册邮箱地址</string>
+    <string name="forgotpassword_send">发送验证邮件</string>
+
+    <!-- 对话框 -->
+    <string name="dialog_login_loging">登录中...</string>
+    <string name="dialog_login_faild">登录失败</string>
+    <string name="dialog_logout_logouting">注销中...</string>
+    <string name="dialog_logout_faild">注销失败</string>
+    <string name="dialog_registe_registing">正在注册...</string>
+    <string name="dialog_registe_faild">注册失败</string>
+    <string name="dialog_forgotpassword_sending">正在请求发送忘记密码邮件...</string>
+    <string name="dialog_forgotpassword_faild">发送忘记密码验证邮件失败</string>
+    <string name="dialog_login_not_logined">还没登陆呢</string>
+
+    <!-- 信息 -->
+    <string name="message_articles_update_faild">文章获取列表失败</string>
+    <string name="message_topbar_title">消息</string>
+    <string name="message_refresh_error">消息获取失败</string>
+    <string name="message_send">发送</string>
+    <string name="message_send_faild">发送失败</string>
+    <string name="message_session_not_found">没有找到此对话</string>
+    <string name="message_msg_isempty">你还没输入内容</string>
+
+    <!-- 关于 -->
+    <string name="about_topbar_title">关于</string>
+    <string name="about_company_name">灵感盒子</string>
+    <string name="about_company_info">&#160;@lingganhezi.com</string>
+    <string name="about_copyright">copyright © 2014-2015</string>
+
+    <!-- navbar icon -->
+    <string name="navicon_title_home">主页</string>
+    <string name="navicon_title_meessage">消息</string>
+    <string name="navicon_title_discover">发现</string>
+    <string name="navicon_title_personal">我</string>
+
+    <!-- 个人设置 -->
+
+    <string name="personal_topbar_title">我</string>
+    <string name="personal_login">登陆</string>
+    <string name="personal_logout">注销</string>
+    <string name="personal_setting">设置</string>
+    <string name="personal_about">关于</string>
+
+    <!-- 个人信息 -->
+    <string name="personalinfo_topbar_title"></string>
+    <string name="personalinfo_title2_posts">文章</string>
+    <string name="personalinfo_title2_goods">赞</string>
+    <string name="personalinfo_get_userinfo_faild">刷新用户信息失败</string>
+    <string name="personalinfo_age">年龄</string>
+    <string name="personalinfo_city">地区</string>
+    <string name="personalinfo_description">简介</string>
+    <string name="personalinfo_sex">性别</string>
+    <string name="personalinfo_update_faild">跟新用户信息失败</string>
+
+    <!-- 头像截图 -->
+    <string name="avatar_topbar_title">头像</string>
+    <string name="avatar_clip">截取</string>
+    <string name="avatar_loading">加载头像中...</string>
+    <string name="avatar_pic_has_not_select">还没选头像呢?</string>
+    <string name="avatar_pic_not_fount">找不到这个头像了,是不是删掉了？</string>
+    <string name="avatar_pic_load_error">加载头像图片发生错误</string>
+    <string name="avatar_uploading">上传头像中...</string>
+    <string name="avatar_upload_faild">上传头像失败</string>
+
+    <!-- 设置 -->
+    <string name="setting_topbar_title">设置</string>
+    <string name="setting_clean_imagecache">清除图片缓存</string>
+    <string name="setting_clean_imagecache_cleaning">清除图片缓存中...</string>
+    <string name="setting_clean_imagecache_success">已经清除图片缓存</string>
+    <string name="setting_clean_imagecache_error">清除图片过程中发生错误，某部分缓存无法清除</string>
+    <string name="setting_allow_image_networktype">图片允许使用移动网络</string>
+
+</resources>

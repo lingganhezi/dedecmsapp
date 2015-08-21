@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lingganhezi.myapp.ui.NavLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/table_item_top_center" >
+
+    <com.lingganhezi.myapp.ui.NavIconView
+        style="@style/NavIcon"
+        app:pageIndex="0"
+        app:src="@drawable/icon_1"
+        app:title="@string/navicon_title_discover" />
+
+    <com.lingganhezi.myapp.ui.NavIconView
+        style="@style/NavIcon"
+        app:pageIndex="1"
+        app:src="@drawable/icon_2"
+        app:title="@string/navicon_title_meessage" />
+
+    <ImageView
+        android:id="@+id/navbar_add"
+        style="@style/NavIcon"
+        android:clickable="true"
+        android:padding="5dp"
+        android:src="@drawable/tabbar_compose_icon_add" />
+
+    <com.lingganhezi.myapp.ui.NavIconView
+        style="@style/NavIcon"
+        app:pageIndex="2"
+        app:src="@drawable/icon_3"
+        app:title="@string/navicon_title_discover" />
+
+    <com.lingganhezi.myapp.ui.NavIconView
+        style="@style/NavIcon"
+        app:pageIndex="3"
+        app:src="@drawable/icon_4"
+        app:title="@string/navicon_title_personal" />
+
+</com.lingganhezi.myapp.ui.NavLayout>

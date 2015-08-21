@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray" >
+
+    <com.lingganhezi.myapp.ui.Topbar
+        style="@style/Topbar"
+        app:title="@string/avatar_topbar_title" >
+
+        <Button
+            android:id="@+id/clip_button"
+            style="@style/TopbarButton"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:text="@string/avatar_clip" />
+    </com.lingganhezi.myapp.ui.Topbar>
+
+    <com.lingganhezi.ui.widget.ClipImageLayout
+        android:id="@+id/clip_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:horizontalPadding="50dp" />
+
+</RelativeLayout>

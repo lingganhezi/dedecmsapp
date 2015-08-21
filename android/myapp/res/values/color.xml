@@ -1,0 +1,30 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <color name="gray">#B8B8B8</color>
+    <color name="translucent_black">#A0000000</color>
+    <!-- select -->
+    <color name="select_white">@android:color/white</color>
+    <color name="select_gray">#F5F5F5</color>
+    <!-- button -->
+    <color name="button_unselected">@color/default_blue_color</color>
+    <color name="button_selected">@color/default_light_blue_color</color>
+    <!-- edittext -->
+    <color name="edittext_bar">@color/bg_gray</color>
+    <color name="edittext_bar_focused">@color/default_blue_color</color>
+    <!-- defalut -->
+    <color name="bg_gray">#ECECEC</color>
+    <color name="default_light_grey_color">#929292</color>
+    <color name="default_red_color">#FF8140</color>
+    <color name="default_light_blue_color">#8DDBFA</color>
+    <color name="default_blue_color">#01aff4</color>
+    <color name="default_dark_blue_color">#089EDA</color>
+    <color name="default_black_color">#000000</color>
+    <color name="default_title_color">#343434</color>
+    <color name="default_fragment_bk_color">#f2f2f2</color>
+    <color name="default_fragment_title_bk_color">#f4f5f7</color>
+    <color name="default_fragment_search_bk_color">#e3e4e6</color>
+    <color name="default_value_color">#333333</color>
+    <color name="default_key_color">#999999</color>
+    <color name="default_line_color">#cccccc</color>
+
+</resources>

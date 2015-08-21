@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.lingganhezi.myapp.ui.Topbar
+        android:id="@+id/topbar"
+        style="@style/Topbar" />
+
+    <ProgressBar
+        android:id="@+id/web_progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/progressbar_horizontal_bg" />
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+</LinearLayout>

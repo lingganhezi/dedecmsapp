@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<attr name="title"  format="string"  />
+	<attr name="src"  format="reference" />
+	
+	<declare-styleable name="CircularLoadImageView">
+        <attr name="defaultSrc" format="reference"/>
+    </declare-styleable>
+    
+    <declare-styleable name="NavIconView">
+        <attr name="pageIndex" format="integer" />
+        <attr name="src" />
+        <attr name="title"  />
+    </declare-styleable>
+    
+    <declare-styleable name="Topbar">
+        <attr name="title" />
+        <attr name="showBackButton" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="ClipImageLayout">
+        <attr name="horizontalPadding"  format="dimension"/>
+    </declare-styleable>
+</resources>

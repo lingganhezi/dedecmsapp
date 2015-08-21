@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lingganhezi.myapp"
+    android:versionCode="1"
+    android:versionName="1.1" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="21" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:name="com.lingganhezi.myapp.AppContext"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.MainActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:screenOrientation="sensorPortrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.ContainerActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:screenOrientation="sensorPortrait" >
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.ArticleActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:screenOrientation="sensorPortrait" >
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.AboutActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:screenOrientation="sensorPortrait" >
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.SettingActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:screenOrientation="sensorPortrait" >
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.LoginActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorPortrait" >
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.RegisteActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorPortrait" >
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.ForgotPasswordActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:launchMode="singleInstance"
+            android:screenOrientation="sensorPortrait" >
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.PersonalInfoActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:screenOrientation="sensorPortrait" >
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.AvatarClipActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:screenOrientation="sensorPortrait" >
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.ShowImageActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:screenOrientation="sensorPortrait" >
+        </activity>
+         <activity
+            android:name="com.lingganhezi.myapp.ui.activity.MessageActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:screenOrientation="sensorPortrait" >
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.EditorDialogActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/DialogTheme" >
+        </activity>
+
+        <provider
+            android:name="com.lingganhezi.myapp.ArticleProvider"
+            android:authorities="com.lingganhezi.myapp.data.ArticleProvider" >
+        </provider>
+        <provider
+            android:name="com.lingganhezi.myapp.MessageSessionProvider"
+            android:authorities="com.lingganhezi.myapp.data.MessageSessionProvider" >
+        </provider>
+        <provider
+            android:name="com.lingganhezi.myapp.UserInfoProvider"
+            android:authorities="com.lingganhezi.myapp.data.UserInfoProvider" >
+        </provider>
+        <provider
+            android:name="com.lingganhezi.myapp.PlaceProvider"
+            android:authorities="com.lingganhezi.myapp.data.PlaceProvider" >
+        </provider>
+        <provider
+            android:name="com.lingganhezi.myapp.MessageProvider"
+            android:authorities="com.lingganhezi.myapp.data.MessageProvider" >
+        </provider>
+    </application>
+
+</manifest>

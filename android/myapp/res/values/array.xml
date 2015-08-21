@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="default_emo_phrase">
+        <item>[呵呵]</item>
+        <item>[嘻嘻]</item>
+        <item>[哈哈]</item>
+        <item>[晕]</item>
+        <item>[泪]</item>
+        <item>[馋嘴]</item>
+        <item>[抓狂]</item>
+        <item>[哼]</item>
+        <item>[可爱]</item>
+        <item>[怒]</item>
+        <item>[困]</item>
+        <item>[汗]</item>
+        <item>[睡觉]</item>
+        <item>[偷笑]</item>
+        <item>[酷]</item>
+        <item>[吃惊]</item>
+        <item>[闭嘴]</item>
+        <item>[花心]</item>
+        <item>[失望]</item>
+        <item>[生病]</item>
+        <item>[亲亲]</item>
+        <item>[右哼哼]</item>
+        <item>[嘘]</item>
+        <item>[挤眼]</item>
+        <item>[酷]</item>
+        <item>[感冒]</item>
+        <item>[做鬼脸]</item>
+        <item>[阴险]</item>
+        <item>[热吻]</item>
+        <item>[心]</item>
+        <item>[ok]</item>
+        <item>[不要]</item>
+        <item>[弱]</item>
+        <item>[good]</item>
+        <item>[拳头]</item>
+        <item>[耶]</item>
+        <item>[0]</item>
+        <item>[1]</item>
+        <item>[2]</item>
+        <item>[3]</item>
+        <item>[4]</item>
+        <item>[5]</item>
+        <item>[6]</item>
+        <item>[7]</item>
+        <item>[8]</item>
+        <item>[9]</item>
+    </string-array>
+    <string-array name="yaya_emo_phrase">
+        <item>[牙牙撒花]</item>
+        <item>[牙牙尴尬]</item>
+        <item>[牙牙大笑]</item>
+        <item>[牙牙组团]</item>
+        <item>[牙牙凄凉]</item>
+        <item>[牙牙吐血]</item>
+        <item>[牙牙花痴]</item>
+        <item>[牙牙疑问]</item>
+        <item>[牙牙爱心]</item>
+        <item>[牙牙害羞]</item>
+        <item>[牙牙牙买碟]</item>
+        <item>[牙牙亲一下]</item>
+        <item>[牙牙大哭]</item>
+        <item>[牙牙愤怒]</item>
+        <item>[牙牙挖鼻屎]</item>
+        <item>[牙牙嘻嘻]</item>
+        <item>[牙牙漂漂]</item>
+        <item>[牙牙冰冻]</item>
+        <item>[牙牙傲娇]</item>
+    </string-array>
+
+</resources>

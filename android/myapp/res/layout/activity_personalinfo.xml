@@ -1,0 +1,153 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <com.lingganhezi.myapp.ui.Topbar
+            style="@style/TopbarTransparent"
+            app:title="@string/personalinfo_topbar_title" />
+
+        <!-- header start -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/personalinfo_header_height"
+                android:background="@drawable/personalinfo_header_bg_res"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingTop="60dp" >
+
+                <!-- 头像 -->
+
+                <com.lingganhezi.ui.widget.CircularLoadImageView
+                    android:id="@+id/personalinfo_headerpic"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/avatar_defalut" />
+
+                <TextView
+                    android:id="@+id/personalinfo_username"
+                    style="@style/PersonalInfoText"
+                    android:layout_marginBottom="10dp"
+                    android:padding="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <!-- 文章 -->
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            style="@style/PersonalInfoTitle2Text"
+                            android:text="@string/personalinfo_title2_posts" />
+
+                        <TextView
+                            android:id="@+id/personalinfo_posts"
+                            style="@style/PersonalInfoTitle2Text"
+                            android:text="0" />
+                    </LinearLayout>
+
+                    <!-- 赞 -->
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            style="@style/PersonalInfoTitle2Text"
+                            android:text="@string/personalinfo_title2_goods" />
+
+                        <TextView
+                            android:id="@+id/personalinfo_goods"
+                            style="@style/PersonalInfoTitle2Text"
+                            android:text="0" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <!-- header end -->
+
+            <LinearLayout
+                android:id="@+id/personalinfo_item_sex"
+                style="@style/PersonalInfoListItem" >
+
+                <TextView
+                    style="@style/PersonalInfoListItemTitle"
+                    android:text="@string/personalinfo_sex" />
+
+                <ImageView
+                    android:id="@+id/personalinfo_icon_sex"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="center" />
+            </LinearLayout>
+
+            <!-- 年龄 -->
+
+            <LinearLayout
+                android:id="@+id/personalinfo_item_age"
+                style="@style/PersonalInfoListItem"
+                android:layout_marginTop="@dimen/personal_item_margin" >
+
+                <TextView
+                    style="@style/PersonalInfoListItemTitle"
+                    android:text="@string/personalinfo_age" />
+
+                <TextView
+                    android:id="@+id/personalinfo_age"
+                    style="@style/PersonalInfoListItemValue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/personalinfo_item_city"
+                style="@style/PersonalInfoListItem" >
+
+                <TextView
+                    style="@style/PersonalInfoListItemTitle"
+                    android:text="@string/personalinfo_city" />
+
+                <TextView
+                    android:id="@+id/personalinfo_city"
+                    style="@style/PersonalInfoListItemValue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/personalinfo_item_description"
+                style="@style/PersonalInfoListItem" >
+
+                <TextView
+                    style="@style/PersonalInfoListItemTitle"
+                    android:layout_width="80dp"
+                    android:layout_weight="@null"
+                    android:text="@string/personalinfo_description" />
+
+                <TextView
+                    android:id="@+id/personalinfo_description"
+                    style="@style/PersonalInfoListItemValue"
+                    android:gravity="left|center_vertical" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

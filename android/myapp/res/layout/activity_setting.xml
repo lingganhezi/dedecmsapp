@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <com.lingganhezi.myapp.ui.Topbar
+        style="@style/Topbar"
+        app:title="@string/setting_topbar_title" />
+
+    <!-- 清楚图片缓存 -->
+
+    <LinearLayout
+        android:id="@+id/setting_clean_imagecache"
+        style="@style/SettingItem" >
+
+        <TextView
+            style="@style/SettingItemText"
+            android:text="@string/setting_clean_imagecache" />
+    </LinearLayout>
+
+    <!-- 图片网络访问开关 -->
+
+    <LinearLayout style="@style/SettingItem" >
+
+        <TextView
+            style="@style/SettingItemText"
+            android:text="@string/setting_allow_image_networktype" />
+
+        <com.lingganhezi.ui.widget.SwitchButton
+            android:id="@+id/setting_image_networktype"
+            style="@style/SwitchButton" />
+    </LinearLayout>
+
+</LinearLayout>

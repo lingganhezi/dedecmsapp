@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ImageView
+        android:id="@+id/topbar_back"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/topbar_back" />
+
+    <TextView
+        android:id="@+id/topbar_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:singleLine="true"
+        android:textSize="@dimen/font_size_title" />
+
+</merge>

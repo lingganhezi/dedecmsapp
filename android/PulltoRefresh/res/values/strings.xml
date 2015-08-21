@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="text_loading">正加载中，请稍后......</string>
+    <string name="text_prompt">提示</string>
+    <string name="pullRefreshLayout_loading">正在加载更多...</string>
+    <string name="pullRefreshLayout_has_none">没有更多了...</string>
+    <string name="pullRefreshLayout_none_pullLabel"></string>
+
+</resources>

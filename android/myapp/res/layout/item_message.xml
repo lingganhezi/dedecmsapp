@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top" >
+
+        <com.lingganhezi.ui.widget.CircularLoadImageView
+            android:id="@+id/message_header"
+            style="@style/PersonHeaderImageSmall"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="10dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/message_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:padding="5dp" >
+        <TextView
+            android:id="@+id/message_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:textSize="@dimen/font_size" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/message_state"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:focusable="true"
+        android:scaleType="fitCenter"
+        android:visibility="gone" />
+
+</merge>

@@ -1,0 +1,109 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <com.lingganhezi.myapp.ui.Topbar
+        style="@style/TopbarNoBackButton"
+        app:title="@string/personal_topbar_title" />
+
+    <!-- 头像 -->
+
+    <LinearLayout
+        android:id="@+id/personal_info"
+        style="@style/PersonalListItem"
+        android:layout_height="120dp"
+        android:visibility="gone" >
+
+        <com.lingganhezi.ui.widget.CircularLoadImageView
+            android:id="@+id/personal_info_headerpic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/avatar_defalut"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/personal_info_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="30dp"
+            android:singleLine="true"
+            android:textColor="@color/default_light_grey_color"
+            android:textSize="@dimen/font_size_title" />
+
+        <ImageView style="@style/PersonalListItem_arrow" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/personal_login"
+        style="@style/PersonalListItem" >
+
+        <ImageView
+            style="@style/PersonalListItem_icon"
+            android:src="@drawable/check" />
+
+        <TextView
+            style="@style/PersonalListItem_title"
+            android:text="@string/personal_login" />
+
+        <ImageView style="@style/PersonalListItem_arrow" />
+    </LinearLayout>
+
+    <!-- 设置 -->
+
+    <LinearLayout
+        android:id="@+id/personal_setting"
+        style="@style/PersonalListItem"
+        android:layout_marginTop="@dimen/personal_item_margin" >
+
+        <ImageView
+            style="@style/PersonalListItem_icon"
+            android:src="@drawable/check" />
+
+        <TextView
+            style="@style/PersonalListItem_title"
+            android:text="@string/personal_setting" />
+
+        <ImageView style="@style/PersonalListItem_arrow" />
+    </LinearLayout>
+
+    <!-- 关于 -->
+
+    <LinearLayout
+        android:id="@+id/personal_about"
+        style="@style/PersonalListItem" >
+
+        <ImageView
+            style="@style/PersonalListItem_icon"
+            android:src="@drawable/check" />
+
+        <TextView
+            style="@style/PersonalListItem_title"
+            android:text="@string/personal_about" />
+
+        <ImageView style="@style/PersonalListItem_arrow" />
+    </LinearLayout>
+
+    <!-- 退出 -->
+
+    <LinearLayout
+        android:id="@+id/personal_logout"
+        style="@style/PersonalListItem"
+        android:layout_marginTop="@dimen/personal_item_margin"
+        android:visibility="gone" >
+
+        <TextView
+            style="@style/PersonalListItem_title"
+            android:gravity="center"
+            android:text="@string/personal_logout"
+            android:textColor="@color/default_red_color" />
+    </LinearLayout>
+
+</LinearLayout>
