@@ -87,7 +87,10 @@ public class QueryFriendActivity extends BaseActivity implements OnClickListener
 						showToast(R.string.queryfriend_not_found);
 					}
 				} else {
-					showToast(R.string.queryfriend_query_faild);
+					if(TextUtils.isEmpty(message)){
+						message = getString(R.string.queryfriend_query_faild);
+					}
+					showToast(message);
 				}
 				dismissDialog();
 			}

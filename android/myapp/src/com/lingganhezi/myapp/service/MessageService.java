@@ -516,6 +516,12 @@ public class MessageService extends BaseService {
 	 * @param handler
 	 */
 	public void sendMessage(Message msg, final Handler handler) {
+		
+		//检查是否登录
+		if(!checkLogin(handler)){
+			return;
+		}
+				
 		// 插入到本地数据库
 		msg.setState(Constant.MESSAGE_STATE_SENDING);
 		int id = saveMessage(msg);

@@ -376,11 +376,12 @@ public class UserService extends BaseService {
 	 * @param handler
 	 */
 	public void uploadAvatar(File avatar, final Handler handler) {
-		if (!getServiceManager().getLoginService().isLogined()) {
-			handler.obtainMessage(MSG_SYNC_USERINFO_FAILD).sendToTarget();
+		
+		//检查是否登录
+		if(!checkLogin(handler)){
 			return;
 		}
-
+		
 		final String userid = getCurrentLoginUser().getUserId();
 
 		Map<String, File> files = new HashMap<String, File>();
@@ -439,6 +440,12 @@ public class UserService extends BaseService {
 	 */
 	public void addNewfriend(final String userid, final Handler handler) {
 		Log.i(TAG, "#addNewfriend:" + userid);
+		
+		//检查登录
+		if(!checkLogin(handler)){
+			return;
+		}
+		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("action", "newfriend");
 		params.put("userid", userid);
@@ -523,16 +530,7 @@ public class UserService extends BaseService {
 	 * @param handler
 	 */
 	public void listFriends(Map<String, String> params, final Handler handler) {
-		LoginUserInfo currentUser = getCurrentLoginUser();
-		if (currentUser == null) {
-			// 未登陆
-			if(handler != null){
-				Message msg = handler.obtainMessage(MSG_SYNC_FRIEND_FAILD);
-				msg.getData().putString(MESSAGE_FALG, mContext.getString(R.string.login_not_logined));
-				handler.sendMessage(msg);
-			}
-			return;
-		}
+		//不检查登录
 
 		Request request = new JsonArrayRequest(URL_FRIEND, params, new Listener<JSONArray>() {
 
