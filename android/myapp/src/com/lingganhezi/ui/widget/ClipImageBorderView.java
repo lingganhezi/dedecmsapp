@@ -38,8 +38,7 @@ public class ClipImageBorderView extends View {
 	public ClipImageBorderView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
-		mBorderWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mBorderWidth, getResources()
-				.getDisplayMetrics());
+		mBorderWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mBorderWidth, getResources().getDisplayMetrics());
 	}
 
 	@Override

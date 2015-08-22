@@ -1,59 +1,38 @@
 package com.lingganhezi.myapp.service.handler;
 
 import com.lingganhezi.myapp.service.MessageService;
-import com.lingganhezi.myapp.service.UserService;
-
-import android.database.Cursor;
-import android.os.Handler;
 import android.os.Message;
 
-public class MessageSyncHandler extends Handler{
-	private MessageSyncCallback mMessageSyncCallback;
+public class MessageSyncHandler extends BaseServiceHandler<String> {
 	private String mMsgid;
-	
-	public MessageSyncHandler(String msgid,MessageSyncCallback callback) {
+
+	/**
+	 * 
+	 * @param msgid
+	 * @param callback
+	 *            回传的 string 类型为 msgid
+	 */
+	public MessageSyncHandler(String msgid, Callback<String> callback) {
 		super();
 		mMsgid = msgid;
-		mMessageSyncCallback = callback;
+		mCallback = callback;
 	}
-	
+
 	@Override
 	public void handleMessage(Message msg) {
+		// 赋值给 msg.obj
+		msg.obj = mMsgid;
+
 		switch (msg.what) {
-		//请求成功后
+		// 请求成功后
 		case MessageService.MSG_SYNC_MESSAGE_SUCCESS:
-			if(mMessageSyncCallback != null){
-				mMessageSyncCallback.complate(true,mMsgid);
-			}
+			callCallback(msg, true);
 			break;
 		default:
-			if(mMessageSyncCallback != null){
-				mMessageSyncCallback.complate(false,mMsgid);
-			}
+			callCallback(msg, false);
 			break;
 		}
 		super.handleMessage(msg);
 	}
-	
-	public MessageSyncCallback getMessageSyncCallback() {
-		return mMessageSyncCallback;
-	}
 
-	public void setMessageSyncCallback(MessageSyncCallback MessageSyncCallback) {
-		mMessageSyncCallback = MessageSyncCallback;
-	}
-
-	/**
-	 * 消息同步回调
-	 * @author chenzipeng
-	 *
-	 */
-	public static interface MessageSyncCallback{
-		/**
-		 * 当请求完成后，会调用此方法
-		 * @param success
-		 * @param msgid 
-		 */
-		public void complate(boolean success,String msgid);
-	}
 }

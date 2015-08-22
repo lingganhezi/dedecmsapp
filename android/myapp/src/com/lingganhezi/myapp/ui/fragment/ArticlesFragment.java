@@ -74,35 +74,32 @@ public class ArticlesFragment extends BaseFragment {
 		// 设置 幻灯片
 		View slideView = inflater.inflate(R.layout.slider_acticles, container, false);
 		SlideViewPager viewPagerSpecial = (SlideViewPager) slideView.findViewById(R.id.viewPager_special);
-		CirclePageIndicator pageIndicatorSpecial = (CirclePageIndicator) slideView
-				.findViewById(R.id.viewPagerIndicator_special);
+		CirclePageIndicator pageIndicatorSpecial = (CirclePageIndicator) slideView.findViewById(R.id.viewPagerIndicator_special);
 
 		Slider slider = new Slider(getActivity(), viewPagerSpecial, pageIndicatorSpecial);
 
-		slider.load(getLoaderManager(), new CursorLoader(getActivity(), Constant.CONTENT_URI_ARTICLE_PROVIDER, null,
-				ArticleColumns.TYPE + "=?", new String[] { String.valueOf(Constant.ARTICLE_TYPE_SPECIAL) },
-				ArticleColumns._ID + " DESC"), new PaperEntryConverter() {
+		slider.load(getLoaderManager(), new CursorLoader(getActivity(), Constant.CONTENT_URI_ARTICLE_PROVIDER, null, ArticleColumns.TYPE
+				+ "=?", new String[] { String.valueOf(Constant.ARTICLE_TYPE_SPECIAL) }, ArticleColumns._ID + " DESC"),
+				new PaperEntryConverter() {
 
-			@Override
-			public PagerEntry convert(Cursor cursor) {
-				PagerEntry entry = new PagerEntry();
-				entry.title = cursor.getString(cursor.getColumnIndex(ArticleColumns.TITLE));
-				entry.pic = cursor.getString(cursor.getColumnIndex(ArticleColumns.THUMBNAIL));
-				entry.intent = createIntent(cursor);
-				return entry;
-			}
+					@Override
+					public PagerEntry convert(Cursor cursor) {
+						PagerEntry entry = new PagerEntry();
+						entry.title = cursor.getString(cursor.getColumnIndex(ArticleColumns.TITLE));
+						entry.pic = cursor.getString(cursor.getColumnIndex(ArticleColumns.THUMBNAIL));
+						entry.intent = createIntent(cursor);
+						return entry;
+					}
 
-			// 创建 幻灯片点击后 的 intent
-			private Intent createIntent(Cursor cursor) {
-				Intent intent = new Intent(getActivity(), ArticleActivity.class);
-				intent.putExtra(ArticleActivity.KEY_TITLE,
-						cursor.getString(cursor.getColumnIndex(ArticleColumns.TITLE)));
-				intent.putExtra(ArticleActivity.KEY_CONTENT,
-						cursor.getString(cursor.getColumnIndex(ArticleColumns.CONTENT)));
-				intent.putExtra(ArticleActivity.KEY_URL, cursor.getString(cursor.getColumnIndex(ArticleColumns.URL)));
-				return intent;
-			}
-		});
+					// 创建 幻灯片点击后 的 intent
+					private Intent createIntent(Cursor cursor) {
+						Intent intent = new Intent(getActivity(), ArticleActivity.class);
+						intent.putExtra(ArticleActivity.KEY_TITLE, cursor.getString(cursor.getColumnIndex(ArticleColumns.TITLE)));
+						intent.putExtra(ArticleActivity.KEY_CONTENT, cursor.getString(cursor.getColumnIndex(ArticleColumns.CONTENT)));
+						intent.putExtra(ArticleActivity.KEY_URL, cursor.getString(cursor.getColumnIndex(ArticleColumns.URL)));
+						return intent;
+					}
+				});
 		mArticlesPullRefresh.addHeaderView(slideView);
 
 		checkFirstTimeRun();
@@ -144,8 +141,8 @@ public class ArticlesFragment extends BaseFragment {
 
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			View view = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
-					R.layout.item_articlelistview, null);
+			View view = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.item_articlelistview,
+					null);
 			view.setOnClickListener(mArticleItemClicklistener);
 			return view;
 		}
@@ -185,8 +182,8 @@ public class ArticlesFragment extends BaseFragment {
 			Context context = getActivity();
 			int limit = 20;
 			return new CursorLoader(context, Constant.CONTENT_URI_ARTICLE_PROVIDER, null, ArticleColumns.TYPE + "=?",
-					new String[] { String.valueOf(Constant.ARTICLE_TYPE_NORMAL) }, ArticleProvider.ArticleColumns._ID
-							+ " DESC LIMIT " + limit);
+					new String[] { String.valueOf(Constant.ARTICLE_TYPE_NORMAL) }, ArticleProvider.ArticleColumns._ID + " DESC LIMIT "
+							+ limit);
 		}
 
 		@Override
@@ -241,8 +238,7 @@ public class ArticlesFragment extends BaseFragment {
 					break;
 				case ArticleService.MSG_SYNC_ARTICLES_FAILD:
 				case BaseService.MSG_ERROR:
-					mArticleRefreshHandler.obtainMessage(REFRESH_ERROR,
-							getString(R.string.message_articles_update_faild)).sendToTarget();
+					mArticleRefreshHandler.obtainMessage(REFRESH_ERROR, getString(R.string.message_articles_update_faild)).sendToTarget();
 					break;
 				default:
 					break;

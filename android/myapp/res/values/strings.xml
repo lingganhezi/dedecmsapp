@@ -4,6 +4,7 @@
     <string name="app_name">myapp</string>
 
     <!-- 通用 -->
+    <string name="sreach">搜索</string>
     <string name="cannel">取消</string>
     <string name="confirm">确定</string>
     <string name="exit_commit">再按一次，退出</string>
@@ -73,6 +74,7 @@
     <string name="navicon_title_home">主页</string>
     <string name="navicon_title_meessage">消息</string>
     <string name="navicon_title_discover">发现</string>
+    <string name="navicon_title_firend">好友</string>
     <string name="navicon_title_personal">我</string>
 
     <!-- 个人设置 -->
@@ -111,5 +113,20 @@
     <string name="setting_clean_imagecache_success">已经清除图片缓存</string>
     <string name="setting_clean_imagecache_error">清除图片过程中发生错误，某部分缓存无法清除</string>
     <string name="setting_allow_image_networktype">图片允许使用移动网络</string>
+
+    <!-- 好友 -->
+    <string name="friend_topbar_title">好友</string>
+    <string name="friend_sync_faild">好友列表同步失败</string>
+    
+    <!-- 查找 -->
+    <string name="queryfriend_topbar_title">找朋友</string>
+    <string name="queryfriend_srean_hint">用户名</string>
+    <string name="queryfriend_newfriend">加关注</string>
+    <string name="queryfriend_not_found">没有找到相关的用户</string>
+    <string name="queryfriend_newfriend_adding">正在关注...</string>
+    <string name="queryfriend_newfriend_add_success">关注成功</string>
+    <string name="queryfriend_newfriend_add_faild">关注失败</string>
+    <string name="queryfriend_querying">查找中...</string>
+    <string name="queryfriend_query_faild">查找用户发生错误</string>
 
 </resources>

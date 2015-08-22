@@ -4,6 +4,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.lingganhezi.myapp.R;
 import com.lingganhezi.myapp.entity.MessageSession;
 import com.lingganhezi.myapp.entity.UserInfo;
+import com.lingganhezi.myapp.service.BaseService;
 import com.lingganhezi.myapp.service.MessageService;
 import com.lingganhezi.myapp.service.UserService;
 import com.lingganhezi.myapp.service.handler.UserSyncHandler;
@@ -30,14 +31,14 @@ public class MessageSessionFragment extends BaseFragment {
 	private PullRefreshGridLayout mSessionList;
 	private SessionAdapter mSessionAdapter;
 	private MessageService mMessageService;
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mMessageService = getServiceManager().getMessageService();
-		
+
 		View root = inflater.inflate(R.layout.fragment_message_session, container, false);
 		mSessionList = (PullRefreshGridLayout) root.findViewById(R.id.messages_sessionList);
-		
+
 		Cursor cursor = mMessageService.queryMessageSession();
 		mSessionAdapter = new SessionAdapter(this.getActivity(), cursor, getImageLoder());
 		mSessionList.setAdapter(mSessionAdapter);
@@ -45,14 +46,14 @@ public class MessageSessionFragment extends BaseFragment {
 		mSessionList.setUpdateDataExecutable(mMessageSessionUpdater);
 		return root;
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		mSessionAdapter.notifyDataSetChanged();
 	}
 
-	public static class SessionAdapter extends CursorAdapter {
+	public static class SessionAdapter extends CursorAdapter implements OnClickListener {
 		private MessageService mMessageService;
 		private UserService mUserService;
 		private ImageLoader mImageLoader;
@@ -66,57 +67,68 @@ public class MessageSessionFragment extends BaseFragment {
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
+			final Holder holder = (Holder) view.getTag();
+			
 			MessageSession session = mMessageService.getMessageSessionEntry(cursor);
 
 			String targetUserId = session.getUserid();
 
-			final LoadImageView headerView = ((LoadImageView) view.findViewById(R.id.headerpic));
 			UserInfo targetUser = UserService.getInstance().getUserInfo(targetUserId);
 			// 获取头像
 			if (targetUser != null) {
-				headerView.setImageUrl(targetUser.getProtrait(), mImageLoader);
+				holder.header.setImageUrl(targetUser.getProtrait(), mImageLoader);
 			} else {
 				// 数据库中不存在开始同步信息
-				mUserService.syncUserInfo(targetUserId, new UserSyncHandler(targetUserId,
-						new UserSyncHandler.SyncCallback() {
+				mUserService.syncUserInfo(targetUserId, new UserSyncHandler(targetUserId, new UserSyncHandler.SyncCallback() {
 
-							@Override
-							public void complate(boolean succes, UserInfo userInfo) {
-								if (succes) {
-									headerView.setImageUrl(userInfo.getProtrait(), mImageLoader);
-								} else {
-									// TODO 获取头像失败时的动作，重试？
-								}
-							}
-						}));
+					@Override
+					public void complate(boolean succes, UserInfo userInfo) {
+						if (succes) {
+							holder.header.setImageUrl(userInfo.getProtrait(), mImageLoader);
+						} else {
+							// TODO 获取头像失败时的动作，重试？
+						}
+					}
+				}));
 			}
 
+			holder.name.setText(targetUser.getName());
+			
 			// 获取最后的消息
 			com.lingganhezi.myapp.entity.Message lastMessage = MessageService.getInstance().getLastMessage(session);
 			if (lastMessage != null) {
-				((TextView) view.findViewById(R.id.content)).setText(lastMessage.getMessage());
+				holder.content.setText(lastMessage.getMessage());
 			}
-			view.setTag(session);
+			
+			view.setTag(R.id.tag_bind_data,session);
 		}
 
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			View item = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
-					R.layout.item_messagesession, null);
-			item.setOnClickListener(itemClickListener);
+			View item = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.item_messagesession,
+					null);
+			Holder holder = new Holder();
+			holder.header = ((LoadImageView) item.findViewById(R.id.headerpic));
+			holder.name = ((TextView) item.findViewById(R.id.name));
+			holder.content = ((TextView) item.findViewById(R.id.content));
+			item.setOnClickListener(this);
+			item.setTag(holder);
 			return item;
 		}
+		
+		private class Holder{
+			LoadImageView header;
+			TextView name;
+			TextView content;
+		}
 
-		private OnClickListener itemClickListener = new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				MessageSession session = (MessageSession) v.getTag();
-				Intent intent = new Intent(v.getContext(), MessageActivity.class);
-				intent.putExtra(MessageActivity.KEY_MESSAGE_SESSION_ID, session.getId());
-				v.getContext().startActivity(intent);
-			}
-		};
+		@Override
+		public void onClick(View v) {
+			MessageSession session = (MessageSession) v.getTag(R.id.tag_bind_data);
+			Intent intent = new Intent(v.getContext(), MessageActivity.class);
+			intent.putExtra(MessageActivity.KEY_MESSAGE_SESSION_ID, session.getId());
+			v.getContext().startActivity(intent);
+		}
 	}
 
 	private UpdateDataExecutable mMessageSessionUpdater = new UpdateDataExecutable() {
@@ -127,10 +139,10 @@ public class MessageSessionFragment extends BaseFragment {
 				mMessageService.syncMessage(mRefreshHandler);
 			} else {
 				com.lingganhezi.myapp.entity.Message message = mMessageService.getTopServerMessage();
-				if(message != null){
-					mMessageService.syncMessage(String.valueOf(message.getMsgid()),mRefreshHandler);
-				}else{
-					//当本地数据库中不存在数据时，更新所有数据
+				if (message != null) {
+					mMessageService.syncMessage(String.valueOf(message.getMsgid()), mRefreshHandler);
+				} else {
+					// 当本地数据库中不存在数据时，更新所有数据
 					mMessageService.syncMessage(mRefreshHandler);
 				}
 			}
@@ -141,7 +153,7 @@ public class MessageSessionFragment extends BaseFragment {
 			@Override
 			public boolean handleMessage(Message msg) {
 				switch (msg.what) {
-				case MessageService.MSG_ERROR:
+				case BaseService.MSG_ERROR:
 				case MessageService.MSG_SYNC_MESSAGE_FAILD:
 					mBaseActivity.showToast(R.string.message_refresh_error);
 					break;

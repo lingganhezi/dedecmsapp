@@ -78,32 +78,29 @@ public class ArticlesFragmentOld extends BaseFragment {
 		mListViewArticles = (ListView) rootView.findViewById(R.id.listview_articles);
 
 		SlideViewPager viewPagerSpecial = (SlideViewPager) rootView.findViewById(R.id.viewPager_special);
-		CirclePageIndicator pageIndicatorSpecial = (CirclePageIndicator) rootView
-				.findViewById(R.id.viewPagerIndicator_special);
+		CirclePageIndicator pageIndicatorSpecial = (CirclePageIndicator) rootView.findViewById(R.id.viewPagerIndicator_special);
 
 		// 设置 幻灯片
 		Slider slider = new Slider(getActivity(), viewPagerSpecial, pageIndicatorSpecial);
-		slider.load(getLoaderManager(), new CursorLoader(getActivity(), Constant.CONTENT_URI_ARTICLE_PROVIDER, null,
-				null, null, null), new PaperEntryConverter() {
+		slider.load(getLoaderManager(), new CursorLoader(getActivity(), Constant.CONTENT_URI_ARTICLE_PROVIDER, null, null, null, null),
+				new PaperEntryConverter() {
 
-			@Override
-			public PagerEntry convert(Cursor cursor) {
-				PagerEntry entry = new PagerEntry();
-				entry.title = cursor.getString(cursor.getColumnIndex(ArticleColumns.TITLE));
-				entry.pic = cursor.getString(cursor.getColumnIndex(ArticleColumns.THUMBNAIL));
-				entry.intent = createIntent(cursor);
-				return entry;
-			}
+					@Override
+					public PagerEntry convert(Cursor cursor) {
+						PagerEntry entry = new PagerEntry();
+						entry.title = cursor.getString(cursor.getColumnIndex(ArticleColumns.TITLE));
+						entry.pic = cursor.getString(cursor.getColumnIndex(ArticleColumns.THUMBNAIL));
+						entry.intent = createIntent(cursor);
+						return entry;
+					}
 
-			private Intent createIntent(Cursor cursor) {
-				Intent intent = new Intent(getActivity(), ArticleActivity.class);
-				intent.putExtra(ArticleActivity.KEY_TITLE,
-						cursor.getString(cursor.getColumnIndex(ArticleColumns.TITLE)));
-				intent.putExtra(ArticleActivity.KEY_TITLE,
-						cursor.getString(cursor.getColumnIndex(ArticleColumns.CONTENT)));
-				return intent;
-			}
-		});
+					private Intent createIntent(Cursor cursor) {
+						Intent intent = new Intent(getActivity(), ArticleActivity.class);
+						intent.putExtra(ArticleActivity.KEY_TITLE, cursor.getString(cursor.getColumnIndex(ArticleColumns.TITLE)));
+						intent.putExtra(ArticleActivity.KEY_TITLE, cursor.getString(cursor.getColumnIndex(ArticleColumns.CONTENT)));
+						return intent;
+					}
+				});
 
 		// 设置下拉更新绑定
 		mSwipeArticles.setOnRefreshListener(mArticlesOnRefreshListenner);
@@ -152,8 +149,8 @@ public class ArticlesFragmentOld extends BaseFragment {
 
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			return ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
-					R.layout.item_articlelistview, null);
+			return ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+					.inflate(R.layout.item_articlelistview, null);
 		}
 
 		private Article getEntry(Cursor cursor) {
@@ -183,8 +180,8 @@ public class ArticlesFragmentOld extends BaseFragment {
 		public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
 			Context context = getActivity();
 			int limit = 20;
-			return new CursorLoader(context, Constant.CONTENT_URI_ARTICLE_PROVIDER, null, null, null,
-					ArticleProvider.ArticleColumns._ID + " DESC LIMIT " + limit);
+			return new CursorLoader(context, Constant.CONTENT_URI_ARTICLE_PROVIDER, null, null, null, ArticleProvider.ArticleColumns._ID
+					+ " DESC LIMIT " + limit);
 		}
 
 		@Override
@@ -241,8 +238,7 @@ public class ArticlesFragmentOld extends BaseFragment {
 				for (Article article : artilces) {
 					try {
 						Cursor c = context.getContentResolver().query(
-								Uri.withAppendedPath(Constant.CONTENT_URI_ARTICLE_PROVIDER, article.getId()), null,
-								null, null, null);
+								Uri.withAppendedPath(Constant.CONTENT_URI_ARTICLE_PROVIDER, article.getId()), null, null, null, null);
 						if (c != null) {
 							if (c.getCount() == 0) {
 								ContentValues values = new ContentValues();

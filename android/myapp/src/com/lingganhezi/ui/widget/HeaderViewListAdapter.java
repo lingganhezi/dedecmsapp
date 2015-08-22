@@ -67,8 +67,7 @@ public class HeaderViewListAdapter implements WrapperListAdapter, Filterable {
 
 	private final boolean mIsFilterable;
 
-	public HeaderViewListAdapter(ArrayList<FixedViewInfo> headerViewInfos, ArrayList<FixedViewInfo> footerViewInfos,
-			ListAdapter adapter) {
+	public HeaderViewListAdapter(ArrayList<FixedViewInfo> headerViewInfos, ArrayList<FixedViewInfo> footerViewInfos, ListAdapter adapter) {
 		mAdapter = adapter;
 		mIsFilterable = adapter instanceof Filterable;
 
@@ -84,8 +83,7 @@ public class HeaderViewListAdapter implements WrapperListAdapter, Filterable {
 			mFooterViewInfos = footerViewInfos;
 		}
 
-		mAreAllFixedViewsSelectable = areAllListInfosSelectable(mHeaderViewInfos)
-				&& areAllListInfosSelectable(mFooterViewInfos);
+		mAreAllFixedViewsSelectable = areAllListInfosSelectable(mHeaderViewInfos) && areAllListInfosSelectable(mFooterViewInfos);
 	}
 
 	public int getHeadersCount() {
@@ -118,8 +116,7 @@ public class HeaderViewListAdapter implements WrapperListAdapter, Filterable {
 			if (info.view == v) {
 				mHeaderViewInfos.remove(i);
 
-				mAreAllFixedViewsSelectable = areAllListInfosSelectable(mHeaderViewInfos)
-						&& areAllListInfosSelectable(mFooterViewInfos);
+				mAreAllFixedViewsSelectable = areAllListInfosSelectable(mHeaderViewInfos) && areAllListInfosSelectable(mFooterViewInfos);
 
 				return true;
 			}
@@ -134,8 +131,7 @@ public class HeaderViewListAdapter implements WrapperListAdapter, Filterable {
 			if (info.view == v) {
 				mFooterViewInfos.remove(i);
 
-				mAreAllFixedViewsSelectable = areAllListInfosSelectable(mHeaderViewInfos)
-						&& areAllListInfosSelectable(mFooterViewInfos);
+				mAreAllFixedViewsSelectable = areAllListInfosSelectable(mHeaderViewInfos) && areAllListInfosSelectable(mFooterViewInfos);
 
 				return true;
 			}

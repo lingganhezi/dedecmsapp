@@ -90,8 +90,7 @@ public class HurlStack implements HttpStack {
 	}
 
 	@Override
-	public HttpResponse performRequest(Request<?> request, Map<String, String> additionalHeaders) throws IOException,
-			AuthFailureError {
+	public HttpResponse performRequest(Request<?> request, Map<String, String> additionalHeaders) throws IOException, AuthFailureError {
 		String url = request.getUrl();
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.putAll(request.getHeaders());
@@ -119,8 +118,7 @@ public class HurlStack implements HttpStack {
 			// connection.
 			throw new IOException("Could not retrieve response code from HttpUrlConnection.");
 		}
-		StatusLine responseStatus = new BasicStatusLine(protocolVersion, connection.getResponseCode(),
-				connection.getResponseMessage());
+		StatusLine responseStatus = new BasicStatusLine(protocolVersion, connection.getResponseCode(), connection.getResponseMessage());
 		BasicHttpResponse response = new BasicHttpResponse(responseStatus);
 		if (hasResponseBody(request.getMethod(), responseStatus.getStatusCode())) {
 			response.setEntity(entityFromConnection(connection));
@@ -157,8 +155,7 @@ public class HurlStack implements HttpStack {
 	 * @return whether the response has a body
 	 */
 	private static boolean hasResponseBody(int requestMethod, int responseCode) {
-		return requestMethod != Request.Method.HEAD
-				&& !(HttpStatus.SC_CONTINUE <= responseCode && responseCode < HttpStatus.SC_OK)
+		return requestMethod != Request.Method.HEAD && !(HttpStatus.SC_CONTINUE <= responseCode && responseCode < HttpStatus.SC_OK)
 				&& responseCode != HttpStatus.SC_NO_CONTENT && responseCode != HttpStatus.SC_NOT_MODIFIED;
 	}
 
@@ -216,8 +213,8 @@ public class HurlStack implements HttpStack {
 	}
 
 	@SuppressWarnings("deprecation")
-	/* package */static void setConnectionParametersForRequest(HttpURLConnection connection, Request<?> request)
-			throws IOException, AuthFailureError {
+	/* package */static void setConnectionParametersForRequest(HttpURLConnection connection, Request<?> request) throws IOException,
+			AuthFailureError {
 		switch (request.getMethod()) {
 		case Method.DEPRECATED_GET_OR_POST:
 			// This is the deprecated way that needs to be handled for backwards
@@ -275,8 +272,7 @@ public class HurlStack implements HttpStack {
 		}
 	}
 
-	private static void addBodyIfExists(HttpURLConnection connection, Request<?> request) throws IOException,
-			AuthFailureError {
+	private static void addBodyIfExists(HttpURLConnection connection, Request<?> request) throws IOException, AuthFailureError {
 		byte[] body = request.getBody();
 		if (body != null) {
 			connection.setDoOutput(true);

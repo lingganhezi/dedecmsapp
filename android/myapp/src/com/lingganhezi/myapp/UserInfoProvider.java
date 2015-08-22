@@ -17,13 +17,14 @@ public class UserInfoProvider extends BaseProvider {
 		public static final String CITY = "CITY";
 		public static final String DESCRIPTION = "DESCRIPTION";
 		public static final String SEX = "SEX";
+		public static final String ISFRIEND = "ISFRIEND";
 	}
 
 	public static String getCreateSql() {
-		return "CREATE TABLE " + TABLE_NAME + "(" + UserInfoColumns._ID + " TEXT PRIMARY KEY," + UserInfoColumns.NAME
-				+ " TEXT," + UserInfoColumns.EMAIL + " TEXT," + UserInfoColumns.BIRTHDAY + " TEXT,"
-				+ UserInfoColumns.CITY + " TEXT," + UserInfoColumns.DESCRIPTION + " TEXT," + UserInfoColumns.SEX
-				+ " INTEGER," + UserInfoColumns.PORTRAIT + " TEXT" + "); ";
+		return "CREATE TABLE " + TABLE_NAME + "(" + UserInfoColumns._ID + " TEXT PRIMARY KEY," + UserInfoColumns.NAME + " TEXT,"
+				+ UserInfoColumns.EMAIL + " TEXT," + UserInfoColumns.BIRTHDAY + " TEXT," + UserInfoColumns.CITY + " TEXT,"
+				+ UserInfoColumns.DESCRIPTION + " TEXT," + UserInfoColumns.SEX + " INTEGER," + UserInfoColumns.ISFRIEND + " INTEGER ,"
+				+ UserInfoColumns.PORTRAIT + " TEXT" + "); ";
 	}
 
 	@Override

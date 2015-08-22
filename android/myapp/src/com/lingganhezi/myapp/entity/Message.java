@@ -123,10 +123,9 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return "Message [id=" + id + ", msgid=" + msgid + ", floginid=" + floginid + ", tologinid=" + tologinid
-				+ ", folder=" + folder + ", subject=" + subject + ", sendtime=" + sendtime + ", writetime=" + writetime
-				+ ", hasview=" + hasview + ", isadmin=" + isadmin + ", message=" + message + ", sessionid=" + sessionid
-				+ ", state=" + state + "]";
+		return "Message [id=" + id + ", msgid=" + msgid + ", floginid=" + floginid + ", tologinid=" + tologinid + ", folder=" + folder
+				+ ", subject=" + subject + ", sendtime=" + sendtime + ", writetime=" + writetime + ", hasview=" + hasview + ", isadmin="
+				+ isadmin + ", message=" + message + ", sessionid=" + sessionid + ", state=" + state + "]";
 	}
 
 }

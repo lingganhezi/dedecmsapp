@@ -74,8 +74,7 @@ public class SwitchButton extends View implements android.view.View.OnClickListe
 		Matrix m = new Matrix();
 		m.postScale(scale, scale);
 
-		mSwitchBottom = Bitmap.createBitmap(switchBottom, 0, 0, switchBottom.getWidth(), switchBottom.getHeight(), m,
-				true);
+		mSwitchBottom = Bitmap.createBitmap(switchBottom, 0, 0, switchBottom.getWidth(), switchBottom.getHeight(), m, true);
 		mSwitchThumb = Bitmap.createBitmap(switchThumb, 0, 0, switchThumb.getWidth(), switchThumb.getHeight(), m, true);
 		mSwitchFrame = Bitmap.createBitmap(switchFrame, 0, 0, switchFrame.getWidth(), switchFrame.getHeight(), m, true);
 		mSwitchMask = Bitmap.createBitmap(switchMask, 0, 0, switchMask.getWidth(), switchMask.getHeight(), m, true);
@@ -100,8 +99,7 @@ public class SwitchButton extends View implements android.view.View.OnClickListe
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.EXACTLY) {
-			super.onMeasure(widthMeasureSpec,
-					MeasureSpec.makeMeasureSpec(mSwitchFrame.getHeight(), MeasureSpec.EXACTLY));
+			super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(mSwitchFrame.getHeight(), MeasureSpec.EXACTLY));
 		} else {
 			setMeasuredDimension(mSwitchFrame.getWidth(), mSwitchFrame.getHeight());
 		}
@@ -123,10 +121,8 @@ public class SwitchButton extends View implements android.view.View.OnClickListe
 			}
 		}
 		// 这儿是离屏缓冲，自己感觉类似双缓冲机制吧
-		int count = canvas
-				.saveLayer(new RectF(mDest), null, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG
-						| Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG
-						| Canvas.CLIP_TO_LAYER_SAVE_FLAG);
+		int count = canvas.saveLayer(new RectF(mDest), null, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG
+				| Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
 
 		canvas.drawBitmap(mSwitchBottom, mSrc, mDest, null);
 		canvas.drawBitmap(mSwitchThumb, mSrc, mDest, null);

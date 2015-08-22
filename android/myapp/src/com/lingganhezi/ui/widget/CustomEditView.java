@@ -20,15 +20,15 @@ public class CustomEditView extends EditText {
 			try {
 				int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 				if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-					android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getContext()
-							.getSystemService(Context.CLIPBOARD_SERVICE);
+					android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getContext().getSystemService(
+							Context.CLIPBOARD_SERVICE);
 					String value = clipboard.getText().toString();
 					Editable edit = getEditableText();
 					edit.clear();
 					edit.append(Emoparser.getInstance(getContext()).emoCharsequence(value));
 				} else {
-					android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getContext()
-							.getSystemService(Context.CLIPBOARD_SERVICE);
+					android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getContext().getSystemService(
+							Context.CLIPBOARD_SERVICE);
 					String value = clipboard.getText().toString();
 					Editable edit = getEditableText();
 					edit.clear();

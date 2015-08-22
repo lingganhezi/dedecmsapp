@@ -27,8 +27,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class PersonalInfoActivity extends BaseActivity implements
-		OnClickListener {
+public class PersonalInfoActivity extends BaseActivity implements OnClickListener {
 	private final String TAG = PersonalInfoActivity.class.getSimpleName();
 
 	private LoadImageView mHeaderPicView;
@@ -71,8 +70,7 @@ public class PersonalInfoActivity extends BaseActivity implements
 		mHeaderPicView.setOnClickListener(this);
 		findViewById(R.id.personalinfo_item_age).setOnClickListener(this);
 		findViewById(R.id.personalinfo_item_city).setOnClickListener(this);
-		findViewById(R.id.personalinfo_item_description).setOnClickListener(
-				this);
+		findViewById(R.id.personalinfo_item_description).setOnClickListener(this);
 		findViewById(R.id.personalinfo_item_sex).setOnClickListener(this);
 	}
 
@@ -109,22 +107,19 @@ public class PersonalInfoActivity extends BaseActivity implements
 				mUserInfo = mUserService.getUserInfo(mUserid);
 				if (mUserInfo == null) {
 					// 如果没有找到这个userInfo，就发送错误消息
-					mMsgHandler.obtainMessage(BaseService.MSG_ERROR)
-							.sendToTarget();
+					mMsgHandler.obtainMessage(BaseService.MSG_ERROR).sendToTarget();
 					return true;
 				}
 				updateUserInfo();
 				break;
 			case UserService.MSG_SYNC_USERINFO_SUCCESS:
 			case UserService.MSG_SYNC_USERINFO_FAILD:
-				mMsgHandler.obtainMessage(MSG_GET_USERINFO_COMPLATE)
-						.sendToTarget();
+				mMsgHandler.obtainMessage(MSG_GET_USERINFO_COMPLATE).sendToTarget();
 				break;
 			case BaseService.MSG_ERROR:
 				// 当没有网络的时候允许
 				if (msg.obj != null && msg.obj instanceof NoConnectionError) {
-					mMsgHandler.obtainMessage(MSG_GET_USERINFO_COMPLATE)
-							.sendToTarget();
+					mMsgHandler.obtainMessage(MSG_GET_USERINFO_COMPLATE).sendToTarget();
 					break;
 				}
 				// TODO 发生错误！
@@ -153,8 +148,7 @@ public class PersonalInfoActivity extends BaseActivity implements
 
 		String age = new String();
 		try {
-			Date birthday = new SimpleDateFormat("yyyy-MM-dd").parse(mUserInfo
-					.getBirthday());
+			Date birthday = new SimpleDateFormat("yyyy-MM-dd").parse(mUserInfo.getBirthday());
 			Calendar ca = Calendar.getInstance();
 			ca.setTime(birthday);
 			int birthYear = ca.get(Calendar.YEAR);
@@ -170,15 +164,13 @@ public class PersonalInfoActivity extends BaseActivity implements
 		mCityView.setText(mUserService.loadPlaceName(mUserInfo.getCity()));
 		mDescriptionView.setText(mUserInfo.getDescription());
 
-		mSexIconView.setImageResource(UserService.SEX_DRAWABLE_MAP
-				.get(mUserInfo.getSex()));
+		mSexIconView.setImageResource(UserService.SEX_DRAWABLE_MAP.get(mUserInfo.getSex()));
 	}
 
 	@Override
 	public void onClick(View v) {
 		// 不是当前登录用户
-		if (!mUserInfo.getId().equals(
-				mUserService.getCurrentLoginUser().getUserId())) {
+		if (!mUserInfo.getId().equals(mUserService.getCurrentLoginUser().getUserId())) {
 			return;
 		}
 		switch (v.getId()) {
@@ -213,28 +205,22 @@ public class PersonalInfoActivity extends BaseActivity implements
 	}
 
 	private void startEditorDialog(int requestCode) {
-		Intent intent = new Intent(PersonalInfoActivity.this,
-				EditorDialogActivity.class);
+		Intent intent = new Intent(PersonalInfoActivity.this, EditorDialogActivity.class);
 		switch (requestCode) {
 		case REQUEST_CODE_AGE:
-			intent.putExtra(EditorDialogActivity.KEY_TITLE,
-					getString(R.string.personalinfo_age));
-			intent.putExtra(EditorDialogActivity.KEY_TYPE,
-					EditorDialogActivity.TYPE_DATE);
+			intent.putExtra(EditorDialogActivity.KEY_TITLE, getString(R.string.personalinfo_age));
+			intent.putExtra(EditorDialogActivity.KEY_TYPE, EditorDialogActivity.TYPE_DATE);
 			Date date = new Date();
 			try {
-				date = new SimpleDateFormat("yyyy-MM-dd").parse(mUserInfo
-						.getBirthday());
+				date = new SimpleDateFormat("yyyy-MM-dd").parse(mUserInfo.getBirthday());
 			} catch (Exception e) {
 			}
 			intent.putExtra(EditorDialogActivity.KEY_DATE, date);
 			break;
 
 		case REQUEST_CODE_PLACE:
-			intent.putExtra(EditorDialogActivity.KEY_TITLE,
-					getString(R.string.personalinfo_city));
-			intent.putExtra(EditorDialogActivity.KEY_TYPE,
-					EditorDialogActivity.TYPE_PLACE);
+			intent.putExtra(EditorDialogActivity.KEY_TITLE, getString(R.string.personalinfo_city));
+			intent.putExtra(EditorDialogActivity.KEY_TYPE, EditorDialogActivity.TYPE_PLACE);
 			Integer placeid = 0;
 			try {
 				placeid = Integer.valueOf(mUserInfo.getCity());
@@ -244,19 +230,14 @@ public class PersonalInfoActivity extends BaseActivity implements
 			break;
 
 		case REQUEST_CODE_DESCRIPTION:
-			intent.putExtra(EditorDialogActivity.KEY_TITLE,
-					getString(R.string.personalinfo_description));
-			intent.putExtra(EditorDialogActivity.KEY_TYPE,
-					EditorDialogActivity.TYPE_MULTI_TEXT);
-			intent.putExtra(EditorDialogActivity.KEY_TEXT,
-					mUserInfo.getDescription());
+			intent.putExtra(EditorDialogActivity.KEY_TITLE, getString(R.string.personalinfo_description));
+			intent.putExtra(EditorDialogActivity.KEY_TYPE, EditorDialogActivity.TYPE_MULTI_TEXT);
+			intent.putExtra(EditorDialogActivity.KEY_TEXT, mUserInfo.getDescription());
 			break;
 
 		case REQUEST_CODE_SEX:
-			intent.putExtra(EditorDialogActivity.KEY_TITLE,
-					getString(R.string.personalinfo_sex));
-			intent.putExtra(EditorDialogActivity.KEY_TYPE,
-					EditorDialogActivity.TYPE_SEX);
+			intent.putExtra(EditorDialogActivity.KEY_TITLE, getString(R.string.personalinfo_sex));
+			intent.putExtra(EditorDialogActivity.KEY_TYPE, EditorDialogActivity.TYPE_SEX);
 			intent.putExtra(EditorDialogActivity.KEY_SEX, mUserInfo.getSex());
 		default:
 			break;
@@ -276,8 +257,7 @@ public class PersonalInfoActivity extends BaseActivity implements
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode,
-			Intent resultIntent) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
 		if (resultCode != RESULT_OK) {
 			return;
 		}
@@ -314,10 +294,8 @@ public class PersonalInfoActivity extends BaseActivity implements
 
 		// 年龄
 		case REQUEST_CODE_AGE: {
-			Serializable data = resultIntent
-					.getSerializableExtra(EditorDialogActivity.KEY_RESULT_DATA);
-			String dateStr = new SimpleDateFormat("yyyy-MM-dd")
-					.format((Date) data);
+			Serializable data = resultIntent.getSerializableExtra(EditorDialogActivity.KEY_RESULT_DATA);
+			String dateStr = new SimpleDateFormat("yyyy-MM-dd").format((Date) data);
 			mUserInfo.setBirthday(dateStr);
 			updateCurrentLoginUserInfo();
 		}
@@ -325,8 +303,7 @@ public class PersonalInfoActivity extends BaseActivity implements
 
 		// TODO 地区选择
 		case REQUEST_CODE_PLACE: {
-			int placeid = resultIntent.getIntExtra(
-					EditorDialogActivity.KEY_RESULT_DATA, 0);
+			int placeid = resultIntent.getIntExtra(EditorDialogActivity.KEY_RESULT_DATA, 0);
 			if (placeid != 0) {
 				mUserInfo.setCity(String.valueOf(placeid));
 				updateCurrentLoginUserInfo();
@@ -335,16 +312,14 @@ public class PersonalInfoActivity extends BaseActivity implements
 			break;
 
 		case REQUEST_CODE_DESCRIPTION: {
-			String description = (String) resultIntent
-					.getSerializableExtra(EditorDialogActivity.KEY_RESULT_DATA);
+			String description = (String) resultIntent.getSerializableExtra(EditorDialogActivity.KEY_RESULT_DATA);
 			mUserInfo.setDescription(description);
 			updateCurrentLoginUserInfo();
 		}
 			break;
 
 		case REQUEST_CODE_SEX: {
-			int sex = resultIntent.getIntExtra(
-					EditorDialogActivity.KEY_RESULT_DATA, Constant.SEX_UNKONW);
+			int sex = resultIntent.getIntExtra(EditorDialogActivity.KEY_RESULT_DATA, Constant.SEX_UNKONW);
 			mUserInfo.setSex(sex);
 			updateCurrentLoginUserInfo();
 		}
@@ -359,7 +334,7 @@ public class PersonalInfoActivity extends BaseActivity implements
 	 * 更新 当前登陆用户信息，并刷新界面
 	 */
 	private void updateCurrentLoginUserInfo() {
-		//TODO 需要检查登录？
+		// TODO 需要检查登录？
 		mUserService.saveUserInfo(mUserInfo, mMsgHandler);
 		mUserService.getCurrentLoginUser().setUserInfo(mUserInfo);
 		updateUserInfo();

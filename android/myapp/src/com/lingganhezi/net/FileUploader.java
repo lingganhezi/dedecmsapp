@@ -56,8 +56,7 @@ public class FileUploader {
 	 * @param contentType
 	 */
 	public void upload(final String url, final Map<String, File> files, final Map<String, String> params,
-			final Response.Listener<String> responseListener, final Response.ErrorListener errorListener,
-			final ContentType contentType) {
+			final Response.Listener responseListener, final Response.ErrorListener errorListener, final ContentType contentType) {
 		if (null == url || null == responseListener) {
 			return;
 		}

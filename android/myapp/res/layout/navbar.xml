@@ -29,7 +29,7 @@
         style="@style/NavIcon"
         app:pageIndex="2"
         app:src="@drawable/icon_3"
-        app:title="@string/navicon_title_discover" />
+        app:title="@string/navicon_title_firend" />
 
     <com.lingganhezi.myapp.ui.NavIconView
         style="@style/NavIcon"

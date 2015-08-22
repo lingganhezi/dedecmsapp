@@ -45,8 +45,10 @@ public class BaseService {
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				Log.e("BaseService", "networkerror", error);
-				Message msg = handler.obtainMessage(MSG_ERROR, error);
-				handler.sendMessage(msg);
+				if (handler != null) {
+					Message msg = handler.obtainMessage(MSG_ERROR, error);
+					handler.sendMessage(msg);
+				}
 			}
 		};
 	}

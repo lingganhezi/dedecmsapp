@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item type="id" name="tag_default_value"></item>
+    <item type="id" name="tag_bind_data"></item>
 </resources>

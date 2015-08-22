@@ -14,7 +14,7 @@ public class UserInfo {
 	private String city;
 	private String description;
 	private Integer sex;
-
+	private int isFriend;
 	/**
 	 * 头像
 	 */
@@ -82,6 +82,18 @@ public class UserInfo {
 
 	public void setSex(Integer sex) {
 		this.sex = sex;
+	}
+
+	public int getIsFriend() {
+		return isFriend;
+	}
+
+	public boolean IsFriend() {
+		return isFriend != 0;
+	}
+
+	public void setIsFriend(int isFriend) {
+		this.isFriend = isFriend;
 	}
 
 }

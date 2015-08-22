@@ -13,8 +13,8 @@ public class MessageSessionProvider extends BaseProvider {
 	}
 
 	public static String getCreateSql() {
-		return "CREATE TABLE " + TABLE_NAME + "(" + MessageSessionColumns._ID + " INTEGER PRIMARY KEY,"
-				+ MessageSessionColumns.USERID + " TEXT" + "); ";
+		return "CREATE TABLE " + TABLE_NAME + "(" + MessageSessionColumns._ID + " INTEGER PRIMARY KEY," + MessageSessionColumns.USERID
+				+ " TEXT" + "); ";
 	}
 
 	@Override

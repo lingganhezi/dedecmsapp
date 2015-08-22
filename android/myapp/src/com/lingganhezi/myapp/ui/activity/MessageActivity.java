@@ -1,9 +1,7 @@
 package com.lingganhezi.myapp.ui.activity;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.lingganhezi.myapp.Constant;
 import com.lingganhezi.myapp.R;
-import com.lingganhezi.myapp.MessageProvider.MessageColumns;
 import com.lingganhezi.myapp.entity.LoginUserInfo;
 import com.lingganhezi.myapp.entity.Message;
 import com.lingganhezi.myapp.entity.MessageSession;
@@ -11,7 +9,9 @@ import com.lingganhezi.myapp.entity.UserInfo;
 import com.lingganhezi.myapp.service.LoginService;
 import com.lingganhezi.myapp.service.MessageService;
 import com.lingganhezi.myapp.service.UserService;
+import com.lingganhezi.myapp.service.handler.BaseServiceHandler;
 import com.lingganhezi.myapp.service.handler.MessageQueryHandler;
+import com.lingganhezi.myapp.service.handler.MessageSendHandler;
 import com.lingganhezi.myapp.service.handler.UserSyncHandler;
 import com.lingganhezi.myapp.ui.MessageItem;
 import com.lingganhezi.myapp.ui.Topbar;
@@ -19,12 +19,10 @@ import com.lingganhezi.ui.widget.CircularLoadImageView;
 import com.lingganhezi.ui.widget.PullRefreshGridLayout;
 import com.lingganhezi.ui.widget.PullRefreshGridLayout.UpdateDataExecutable;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
@@ -32,7 +30,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FilterQueryProvider;
 
 public class MessageActivity extends BaseActivity implements View.OnClickListener {
 	private MessageService mMessageService;
@@ -133,7 +130,7 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
 		@Override
 		public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 			mMessageAdapter.changeCursor(cursor);
-			//设置到最后
+			// 设置到最后
 			int count = mMessageList.getRefreshableView().getCount();
 			int pos = count - 1;
 			mMessageList.getRefreshableView().setSelection(pos);
@@ -195,7 +192,7 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
 					// 取第一个 item的时间
 					Cursor cursor = (Cursor) mMessageAdapter.getItem(0);
 					Message message = mMessageService.getMessageEntry(cursor);
-					mMessageService.queryMessageByTime(message.getSendtime(),mSession.getId(), mMessageQueryHandler);
+					mMessageService.queryMessageByTime(message.getSendtime(), mSession.getId(), mMessageQueryHandler);
 				} else {
 					// 当没有最后一个消息的时候就去 拉去所有的消息?是否会造成无限自动刷新
 					// mMessageService.queryMessageByTime(Long.MAX_VALUE,mMessageQueryHandler);
@@ -206,35 +203,34 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
 			}
 		}
 
-		private MessageQueryHandler mMessageQueryHandler = new MessageQueryHandler(
-				new MessageQueryHandler.MessageQueryCallback() {
+		private MessageQueryHandler mMessageQueryHandler = new MessageQueryHandler(new BaseServiceHandler.Callback<Cursor>() {
 
-					@Override
-					public void complate(boolean success, final Cursor cursor) {
-						if (success) {
-						
-							//bug 这里会闪一下，以为之前 swapCursor的时候 会去更新画面
-							mMessageList.post(new Runnable() {
-								
-								@Override
-								public void run() {
-									//设置 位置到刚刚的位置
-									int oldCount = mMessageAdapter.getCount();
-									int newCount = cursor.getCount();
-									final int pos = newCount - oldCount < 0 ?0:newCount - oldCount;					
-									//替换cursor
-									mMessageAdapter.changeCursor(cursor);
-									mMessageList.getRefreshableView().setSelection(pos);
-								}
-							});
-							
-							
-						} else {
-							showToast(R.string.message_refresh_error);
+			@Override
+			public void complate(boolean success, final Cursor cursor, String message) {
+				if (success) {
+
+					// bug 这里会闪一下，以为之前 swapCursor的时候 会去更新画面
+					mMessageList.post(new Runnable() {
+
+						@Override
+						public void run() {
+							// 设置 位置到刚刚的位置
+							int oldCount = mMessageAdapter.getCount();
+							int newCount = cursor.getCount();
+							final int pos = newCount - oldCount < 0 ? 0 : newCount - oldCount;
+							// 替换cursor
+							mMessageAdapter.changeCursor(cursor);
+							mMessageList.getRefreshableView().setSelection(pos);
 						}
-						mMessageList.onRefreshComplete();
-					}
-				});
+					});
+
+				} else {
+					showToast(R.string.message_refresh_error);
+				}
+				mMessageList.onRefreshComplete();
+			}
+
+		});
 
 	};
 
@@ -243,35 +239,33 @@ public class MessageActivity extends BaseActivity implements View.OnClickListene
 	 */
 	private void sendMessage() {
 		String text = mMessageText.getText().toString();
-		
-		if(TextUtils.isEmpty(text)){
+
+		if (TextUtils.isEmpty(text)) {
 			showToast(R.string.message_msg_isempty);
 			return;
 		}
-		
+
 		// 清空对话框
 		mMessageText.getEditableText().clear();
-		
+
 		Message message = mMessageService.buildSendMessage(mSession.getUserid(), text);
-		mMessageService.sendMessage(message, new Handler(new Handler.Callback() {
+		mMessageService.sendMessage(message, new MessageSendHandler(new BaseServiceHandler.Callback() {
 
 			@Override
-			public boolean handleMessage(android.os.Message msg) {
-				switch (msg.what) {
-				case MessageService.MSG_SEND_MESSAGE_SUCCESS:
-					// TODO 成功后处理
-					break;
-				default:
-					// TODO 发送失败处理
-					showToast(R.string.message_send_faild);
-					break;
+			public void complate(boolean success, Object entry, String message) {
+				if (!success) {
+					// 当发送不成功时，显示错误信息
+					if (TextUtils.isEmpty(message)) {
+						message = getString(R.string.message_send_faild);
+					}
+					showToast(message);
 				}
-				return true;
 			}
+
 		}));
 		// 发送发送命令后，更新adapter
-		//由于cursorAdpater 设置了自动更新 ，这里就不用通知数据改变
-		//mMessageAdapter.notifyDataSetChanged();
+		// 由于cursorAdpater 设置了自动更新 ，这里就不用通知数据改变
+		// mMessageAdapter.notifyDataSetChanged();
 	};
 
 	/**

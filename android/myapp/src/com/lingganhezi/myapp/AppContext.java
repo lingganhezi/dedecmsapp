@@ -25,13 +25,13 @@ public class AppContext extends Application {
 		// 创建 请求队列池
 		createRequestQueuePool();
 
-		//debug
-		if(Constant.DEBUG){
-			if(TextUtils.isEmpty(ConfigHelper.getInstance().loadLoginUserInfoConfig().getUserId())){
+		// debug
+		if (Constant.DEBUG) {
+			if (TextUtils.isEmpty(ConfigHelper.getInstance().loadLoginUserInfoConfig().getUserId())) {
 				ConfigHelper.getInstance().saveLoginUserInfoConfig(new LoginUserInfo(Constant.DEBUG_USER_ID, Constant.DEBUG_USER_PWD));
 			}
 		}
-		
+
 		// 创建的时候自动登录
 		LoginService.getInstance().autoLogin();
 	}

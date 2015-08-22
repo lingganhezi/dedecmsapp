@@ -263,8 +263,7 @@ public final class DiskLruCache implements Closeable {
 	}
 
 	/** This cache uses a single background thread to evict entries. */
-	private final ExecutorService executorService = new ThreadPoolExecutor(0, 1, 60L, TimeUnit.SECONDS,
-			new LinkedBlockingQueue<Runnable>());
+	private final ExecutorService executorService = new ThreadPoolExecutor(0, 1, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 	private final Callable<Void> cleanupCallable = new Callable<Void>() {
 		@Override
 		public Void call() throws Exception {
@@ -343,11 +342,10 @@ public final class DiskLruCache implements Closeable {
 			String appVersionString = readAsciiLine(in);
 			String valueCountString = readAsciiLine(in);
 			String blank = readAsciiLine(in);
-			if (!MAGIC.equals(magic) || !VERSION_1.equals(version)
-					|| !Integer.toString(appVersion).equals(appVersionString)
+			if (!MAGIC.equals(magic) || !VERSION_1.equals(version) || !Integer.toString(appVersion).equals(appVersionString)
 					|| !Integer.toString(valueCount).equals(valueCountString) || !"".equals(blank)) {
-				throw new IOException("unexpected journal header: [" + magic + ", " + version + ", " + valueCountString
-						+ ", " + blank + "]");
+				throw new IOException("unexpected journal header: [" + magic + ", " + version + ", " + valueCountString + ", " + blank
+						+ "]");
 			}
 
 			while (true) {
@@ -515,8 +513,7 @@ public final class DiskLruCache implements Closeable {
 		checkNotClosed();
 		validateKey(key);
 		Entry entry = lruEntries.get(key);
-		if (expectedSequenceNumber != ANY_SEQUENCE_NUMBER
-				&& (entry == null || entry.sequenceNumber != expectedSequenceNumber)) {
+		if (expectedSequenceNumber != ANY_SEQUENCE_NUMBER && (entry == null || entry.sequenceNumber != expectedSequenceNumber)) {
 			return null; // snapshot is stale
 		}
 		if (entry == null) {

@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray"
+    android:orientation="vertical" >
+
+    <com.lingganhezi.myapp.ui.Topbar
+        android:id="@+id/topbar"
+        style="@style/Topbar" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/topbar_backbtn_width"
+            android:paddingLeft="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <com.lingganhezi.ui.widget.CustomEditView
+                android:id="@+id/sreach_text"
+                style="@style/EditText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:hint="@string/queryfriend_srean_hint" />
+
+            <TextView
+                android:id="@+id/sreach_btn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/sreach"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </com.lingganhezi.myapp.ui.Topbar>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        android:transcriptMode="normal" />
+
+</LinearLayout>

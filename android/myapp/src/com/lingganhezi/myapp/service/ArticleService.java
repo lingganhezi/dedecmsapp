@@ -112,8 +112,8 @@ public class ArticleService extends BaseService {
 		// String orderBy = ArticleColumns._ID + " DESC LIMIT " + mQueryCount;
 		String orderBy = ArticleColumns._ID + " DESC";
 		String where = ArticleColumns._ID + ">?";
-		Cursor cursor = mContentResolver.query(Constant.CONTENT_URI_ARTICLE_PROVIDER, null, where,
-				new String[] { String.valueOf(id) }, orderBy);
+		Cursor cursor = mContentResolver.query(Constant.CONTENT_URI_ARTICLE_PROVIDER, null, where, new String[] { String.valueOf(id) },
+				orderBy);
 		return cursor;
 	}
 
@@ -125,9 +125,8 @@ public class ArticleService extends BaseService {
 	public void insertArticles(Collection<Article> artilces) {
 		// 插入数据到数据库
 		for (Article article : artilces) {
-			Cursor c = mContentResolver.query(
-					Uri.withAppendedPath(Constant.CONTENT_URI_ARTICLE_PROVIDER, article.getId()), null, null, null,
-					null);
+			Cursor c = mContentResolver.query(Uri.withAppendedPath(Constant.CONTENT_URI_ARTICLE_PROVIDER, article.getId()), null, null,
+					null, null);
 			if (c != null) {
 				if (c.getCount() == 0) {
 					ContentValues values = new ContentValues();

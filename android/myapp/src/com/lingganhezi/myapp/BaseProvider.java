@@ -134,17 +134,16 @@ public abstract class BaseProvider extends ContentProvider {
 
 		case MATCHER_ID:
 			String noteId = uri.getPathSegments().get(0);
-			count = db.update(getTableName(), values,
-					getIdColumn() + "='" + noteId + "'"
-							+ (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
+			count = db.update(getTableName(), values, getIdColumn() + "='" + noteId + "'"
+					+ (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
 			break;
 
 		default:
 			throw new IllegalArgumentException("Unknow URI " + uri);
 		}
-		
-		if(count > 0){
-			//TODO 当匹配是 MATCHER_ID的时候 需要 特殊通知 带id的uri？
+
+		if (count > 0) {
+			// TODO 当匹配是 MATCHER_ID的时候 需要 特殊通知 带id的uri？
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
 		return count;

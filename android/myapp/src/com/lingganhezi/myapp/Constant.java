@@ -8,7 +8,7 @@ public class Constant {
 	public final static boolean DEBUG = true;
 	public final static String DEBUG_USER_ID = "453333657@qq.com";
 	public final static String DEBUG_USER_PWD = "chenzipeng";
-	
+
 	/**
 	 * 服务器配置
 	 */
@@ -33,16 +33,11 @@ public class Constant {
 	public final static int STATE_CODE_FAILD = 0;
 	public final static int STATE_CODE_SUCCESS = 1;
 
-	public final static Uri CONTENT_URI_ARTICLE_PROVIDER = Uri
-			.parse("content://com.lingganhezi.myapp.data.ArticleProvider");
-	public final static Uri CONTENT_URI_MESSAGE_SESSION_PROVIDER = Uri
-			.parse("content://com.lingganhezi.myapp.data.MessageSessionProvider");
-	public final static Uri CONTENT_URI_USERINFO_PROVIDER = Uri
-			.parse("content://com.lingganhezi.myapp.data.UserInfoProvider");
-	public final static Uri CONTENT_URI_PLACE_PROVIDER = Uri
-			.parse("content://com.lingganhezi.myapp.data.PlaceProvider");
-	public final static Uri CONTENT_URI_MESSAGE_PROVIDER = Uri
-			.parse("content://com.lingganhezi.myapp.data.MessageProvider");
+	public final static Uri CONTENT_URI_ARTICLE_PROVIDER = Uri.parse("content://com.lingganhezi.myapp.data.ArticleProvider");
+	public final static Uri CONTENT_URI_MESSAGE_SESSION_PROVIDER = Uri.parse("content://com.lingganhezi.myapp.data.MessageSessionProvider");
+	public final static Uri CONTENT_URI_USERINFO_PROVIDER = Uri.parse("content://com.lingganhezi.myapp.data.UserInfoProvider");
+	public final static Uri CONTENT_URI_PLACE_PROVIDER = Uri.parse("content://com.lingganhezi.myapp.data.PlaceProvider");
+	public final static Uri CONTENT_URI_MESSAGE_PROVIDER = Uri.parse("content://com.lingganhezi.myapp.data.MessageProvider");
 
 	/**
 	 * 普通文章类型

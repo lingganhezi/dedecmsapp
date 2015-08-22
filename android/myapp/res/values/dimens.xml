@@ -22,6 +22,8 @@
     
     <!-- topbar -->
     <dimen name="topbar_height">50dp</dimen>
+    <dimen name="topbar_paddingRight">20dp</dimen>
+    <dimen name="topbar_backbtn_width">40dp</dimen>
     
     <!-- personalinfo -->
     <dimen name="personalinfo_header_height">250dp</dimen>

@@ -133,8 +133,7 @@ public class ClipRectZoomImageView extends ImageView implements OnScaleGestureLi
 
 			final float currentScale = getScale();
 			// 如果值在合法范围内，继续缩放
-			if (((tmpScale > 1f) && (currentScale < mTargetScale))
-					|| ((tmpScale < 1f) && (mTargetScale < currentScale))) {
+			if (((tmpScale > 1f) && (currentScale < mTargetScale)) || ((tmpScale < 1f) && (mTargetScale < currentScale))) {
 				ClipRectZoomImageView.this.postDelayed(this, 16);
 			} else
 			// 设置为目标的缩放比例
@@ -355,8 +354,8 @@ public class ClipRectZoomImageView extends ImageView implements OnScaleGestureLi
 		Canvas canvas = new Canvas(bitmap);
 		draw(canvas);
 
-		return Bitmap.createBitmap(bitmap, mHorizontalPadding, mVerticalPadding, getWidth() - 2 * mHorizontalPadding,
-				getWidth() - 2 * mHorizontalPadding);
+		return Bitmap.createBitmap(bitmap, mHorizontalPadding, mVerticalPadding, getWidth() - 2 * mHorizontalPadding, getWidth() - 2
+				* mHorizontalPadding);
 	}
 
 	/**
@@ -370,8 +369,7 @@ public class ClipRectZoomImageView extends ImageView implements OnScaleGestureLi
 
 		int width = getWidth();
 		int height = getHeight();
-		Log.e(TAG, "rect.width() =  " + rect.width() + " , width - 2 * mHorizontalPadding ="
-				+ (width - 2 * mHorizontalPadding));
+		Log.e(TAG, "rect.width() =  " + rect.width() + " , width - 2 * mHorizontalPadding =" + (width - 2 * mHorizontalPadding));
 
 		// 如果宽或高大于屏幕，则控制范围 ; 这里的0.001是因为精度丢失会产生问题，但是误差一般很小，所以我们直接加了一个0.01
 		if (rect.width() + 0.01 >= width - 2 * mHorizontalPadding) {

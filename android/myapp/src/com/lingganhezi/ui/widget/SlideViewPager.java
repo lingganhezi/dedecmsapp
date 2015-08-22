@@ -29,8 +29,7 @@ public class SlideViewPager extends ViewPager implements Runnable {
 	// 自动滚动关键
 	public void run() {
 		long currentTime = System.currentTimeMillis();
-		if (getAdapter() != null && getAdapter().getCount() > 1 && !touching
-				&& (currentTime - pageHandlerTime >= POST_DELAYED_TIME)) {
+		if (getAdapter() != null && getAdapter().getCount() > 1 && !touching && (currentTime - pageHandlerTime >= POST_DELAYED_TIME)) {
 			int nextItem = getCurrentItem() + 1;
 			nextItem = nextItem >= getAdapter().getCount() ? 0 : nextItem;
 			setCurrentItem(nextItem, true);

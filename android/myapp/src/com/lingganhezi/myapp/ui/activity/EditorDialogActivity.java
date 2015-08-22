@@ -274,8 +274,8 @@ public class EditorDialogActivity extends BaseActivity {
 			default:
 				break;
 			}
-			CursorLoader loader = new CursorLoader(EditorDialogActivity.this, Constant.CONTENT_URI_PLACE_PROVIDER,
-					null, PlaceColumns.REID + "=?", new String[] { String.valueOf(reid) }, null);
+			CursorLoader loader = new CursorLoader(EditorDialogActivity.this, Constant.CONTENT_URI_PLACE_PROVIDER, null, PlaceColumns.REID
+					+ "=?", new String[] { String.valueOf(reid) }, null);
 			return loader;
 		}
 
@@ -488,8 +488,7 @@ public class EditorDialogActivity extends BaseActivity {
 	 */
 	private void showSoftInput(View fourceView) {
 		fourceView.requestFocus();
-		InputMethodManager inputManager = (InputMethodManager) fourceView.getContext().getSystemService(
-				Context.INPUT_METHOD_SERVICE);
+		InputMethodManager inputManager = (InputMethodManager) fourceView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		inputManager.showSoftInput(fourceView, 0);
 	}

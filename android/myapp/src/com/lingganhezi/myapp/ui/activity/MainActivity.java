@@ -6,6 +6,7 @@ import java.util.List;
 import com.lingganhezi.myapp.R;
 import com.lingganhezi.myapp.ui.NavLayout;
 import com.lingganhezi.myapp.ui.fragment.ArticlesFragment;
+import com.lingganhezi.myapp.ui.fragment.FriendFragment;
 import com.lingganhezi.myapp.ui.fragment.MessageSessionFragment;
 import com.lingganhezi.myapp.ui.fragment.PersonalFragment;
 import com.viewpagerindicator.IconPagerAdapter;
@@ -41,12 +42,12 @@ public class MainActivity extends BaseActivity {
 
 	public class SectionsPagerAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
 		private List<Fragment> pages = new ArrayList<Fragment>();
-		
+
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 			pages.add(new ArticlesFragment());
 			pages.add(new MessageSessionFragment());
-			pages.add(new ArticlesFragment());
+			pages.add(new FriendFragment());
 			pages.add(new PersonalFragment());
 		}
 

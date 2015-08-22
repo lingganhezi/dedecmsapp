@@ -24,8 +24,7 @@ public class JsonArrayRequest extends Request<JSONArray> {
 	private Map<String, String> mParams;
 	private Listener<JSONArray> mListener;
 
-	public JsonArrayRequest(String url, Map<String, String> params, Listener<JSONArray> listener,
-			ErrorListener errorListener) {
+	public JsonArrayRequest(String url, Map<String, String> params, Listener<JSONArray> listener, ErrorListener errorListener) {
 		super(Method.POST, url, errorListener);
 		mListener = listener;
 		mParams = params;

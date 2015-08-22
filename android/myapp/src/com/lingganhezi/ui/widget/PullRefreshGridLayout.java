@@ -63,7 +63,7 @@ public class PullRefreshGridLayout extends PullToRefreshGridView {
 
 		@Override
 		public void onLastItemVisible() {
-			if(getMode() == Mode.BOTH  ||  getMode() == Mode.PULL_UP_TO_REFRESH){
+			if (getMode() == Mode.BOTH || getMode() == Mode.PULL_UP_TO_REFRESH) {
 				int tempLastVisibleItemIndex = PullRefreshGridLayout.this.getRefreshableView().getLastVisiblePosition();
 				if (!isLoadEnd() && lastVisibleItemIndex != tempLastVisibleItemIndex) {
 					lastVisibleItemIndex = tempLastVisibleItemIndex;

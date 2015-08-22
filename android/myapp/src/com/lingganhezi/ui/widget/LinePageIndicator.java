@@ -196,8 +196,7 @@ public class LinePageIndicator extends View implements PageIndicator {
 		for (int i = 0; i < count; i++) {
 			float dx1 = horizontalOffset + (i * lineWidthAndGap);
 			float dx2 = dx1 + mLineWidth;
-			canvas.drawLine(dx1, verticalOffset, dx2, verticalOffset, (i == mCurrentPage) ? mPaintSelected
-					: mPaintUnselected);
+			canvas.drawLine(dx1, verticalOffset, dx2, verticalOffset, (i == mCurrentPage) ? mPaintSelected : mPaintUnselected);
 		}
 	}
 

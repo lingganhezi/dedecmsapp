@@ -24,8 +24,7 @@ public class JsonObjectRequest extends Request<JSONObject> {
 	private Map<String, String> mParams;
 	private Listener<JSONObject> mListener;
 
-	public JsonObjectRequest(String url, Map<String, String> params, Listener<JSONObject> listener,
-			ErrorListener errorListener) {
+	public JsonObjectRequest(String url, Map<String, String> params, Listener<JSONObject> listener, ErrorListener errorListener) {
 		super(Method.POST, url, errorListener);
 		mListener = listener;
 		mParams = params;

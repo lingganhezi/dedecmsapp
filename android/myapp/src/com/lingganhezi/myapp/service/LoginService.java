@@ -6,7 +6,6 @@ import java.util.Map;
 import org.json.JSONObject;
 
 import com.android.volley.Request;
-import com.android.volley.Response.Listener;
 import com.lingganhezi.myapp.AppContext;
 import com.lingganhezi.myapp.ConfigHelper;
 import com.lingganhezi.myapp.Constant;
@@ -14,6 +13,7 @@ import com.lingganhezi.myapp.HttpHelper;
 import com.lingganhezi.myapp.entity.LoginUserInfo;
 import com.lingganhezi.myapp.entity.Respone;
 import com.lingganhezi.myapp.entity.UserInfo;
+import com.lingganhezi.myapp.net.ResultResponeListener;
 import com.lingganhezi.net.JsonObjectRequest;
 
 import android.content.Context;
@@ -80,44 +80,51 @@ public class LoginService extends BaseService {
 		params.put("username", username);
 		params.put("password", password);
 
-		Request request = new JsonObjectRequest(LOGIN_URL, params, new Listener<JSONObject>() {
+		Request request = new JsonObjectRequest(LOGIN_URL, params, new ResultResponeListener() {
 
 			@Override
 			public void onResponse(JSONObject response) {
 				Respone result = (Respone) HttpHelper.getJsonObject(response, Respone.class);
 				Message msg = null;
 				if (result.stateCode == Constant.STATE_CODE_SUCCESS) {
-					msg = handler.obtainMessage(MSG_LOGIN_SUCCESS);
-
-					// 同步个人信息
-					final Message loginMsg = msg;
-					getServiceManager().getUserService().syncUserInfo(username, new Handler(new Handler.Callback() {
-
-						@Override
-						public boolean handleMessage(Message syncmsg) {
-							switch (syncmsg.what) {
-							case UserService.MSG_SYNC_USERINFO_SUCCESS:
-								UserInfo userInfo = (UserInfo) syncmsg.obj;
-								LoginUserInfo loginUserInfo = new LoginUserInfo(userInfo);
-								loginUserInfo.setPassword(password);
-
-								getServiceManager().getUserService().setCurrentLoginUser(loginUserInfo);
-								break;
-
-							default:
-								break;
-							}
-							// TODO 需要处理同步信息发生的错误？
-							handler.sendMessage(loginMsg);
-							return true;
-						}
-					}));
 
 				} else {
 					msg = handler.obtainMessage(MSG_LOGIN_FAILD);
 					msg.getData().putString(MESSAGE_FALG, result.message);
 					handler.sendMessage(msg);
 				}
+			}
+
+			@Override
+			protected void handeResponeSuccess(Respone result) {
+				final Message msg = getMessage(MSG_LOGIN_SUCCESS);
+
+				getServiceManager().getUserService().syncUserInfo(username, new Handler(new Handler.Callback() {
+
+					@Override
+					public boolean handleMessage(Message syncmsg) {
+						switch (syncmsg.what) {
+						case UserService.MSG_SYNC_USERINFO_SUCCESS:
+							UserInfo userInfo = (UserInfo) syncmsg.obj;
+							LoginUserInfo loginUserInfo = new LoginUserInfo(userInfo);
+							loginUserInfo.setPassword(password);
+
+							getServiceManager().getUserService().setCurrentLoginUser(loginUserInfo);
+							break;
+
+						default:
+							break;
+						}
+						// TODO 需要处理同步信息发生的错误？
+						sendHandlerMessage(handler, msg);
+						return true;
+					}
+				}));
+			}
+
+			@Override
+			protected void handeResponeFaild(Respone result) {
+				sendHandlerMessage(handler, getMessage(MSG_LOGIN_FAILD));
 			}
 
 		}, getErrorListener(handler));
@@ -153,21 +160,17 @@ public class LoginService extends BaseService {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("email", emial);
 
-		Request request = new JsonObjectRequest(FORGOTPASSWORD_URL, params, new Listener<JSONObject>() {
+		Request request = new JsonObjectRequest(FORGOTPASSWORD_URL, params, new ResultResponeListener() {
 
 			@Override
-			public void onResponse(JSONObject response) {
-				Respone result = (Respone) HttpHelper.getJsonObject(response, Respone.class);
-				Message msg = null;
-				if (result.stateCode == Constant.STATE_CODE_SUCCESS) {
-					msg = handler.obtainMessage(MSG_FORGOTPASSWORD_SUCCESS);
-				} else {
-					msg = handler.obtainMessage(MSG_FORGOTPASSWORD_FAILD);
-				}
-				msg.getData().putString(MESSAGE_FALG, result.message);
-				handler.sendMessage(msg);
+			protected void handeResponeSuccess(Respone result) {
+				sendHandlerMessage(handler, getMessage(MSG_FORGOTPASSWORD_SUCCESS));
 			}
 
+			@Override
+			protected void handeResponeFaild(Respone result) {
+				sendHandlerMessage(handler, getMessage(MSG_FORGOTPASSWORD_FAILD));
+			}
 		}, getErrorListener(handler));
 
 		getHttpRequesttQueue().add(request);
@@ -186,19 +189,16 @@ public class LoginService extends BaseService {
 		params.put("email", email);
 		params.put("password", password);
 
-		Request request = new JsonObjectRequest(REGISTE_URL, params, new Listener<JSONObject>() {
+		Request request = new JsonObjectRequest(REGISTE_URL, params, new ResultResponeListener() {
 
 			@Override
-			public void onResponse(JSONObject response) {
-				Respone result = (Respone) HttpHelper.getJsonObject(response, Respone.class);
-				Message msg = null;
-				if (result.stateCode == Constant.STATE_CODE_SUCCESS) {
-					msg = handler.obtainMessage(MSG_REGISTE_SUCCESS);
-				} else {
-					msg = handler.obtainMessage(MSG_REGISTE_FAILD);
-				}
-				msg.getData().putString(MESSAGE_FALG, result.message);
-				handler.sendMessage(msg);
+			protected void handeResponeSuccess(Respone result) {
+				sendHandlerMessage(handler, getMessage(MSG_REGISTE_SUCCESS));
+			}
+
+			@Override
+			protected void handeResponeFaild(Respone result) {
+				sendHandlerMessage(handler, getMessage(MSG_REGISTE_FAILD));
 			}
 
 		}, getErrorListener(handler));

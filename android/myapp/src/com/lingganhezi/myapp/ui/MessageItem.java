@@ -10,7 +10,6 @@ import com.lingganhezi.ui.widget.CircularLoadImageView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,15 +18,16 @@ import android.widget.TextView;
 
 /**
  * 消息view
+ * 
  * @author chenzipeng
  *
  */
-public class MessageItem extends LinearLayout implements View.OnClickListener{
+public class MessageItem extends LinearLayout implements View.OnClickListener {
 	private CircularLoadImageView mHeaderView;
 	private TextView mContentView;
 	private ImageView mStateView;
 	private ViewGroup mMessageContainer;
-	
+
 	private Message mMessage;
 	private boolean mMyself;
 	private UserHeaderLoader mUserHeaderLoader;
@@ -42,42 +42,42 @@ public class MessageItem extends LinearLayout implements View.OnClickListener{
 
 		int paddingPx = DensityHelper.dip2px(context, padding);
 		setPadding(paddingPx, paddingPx, paddingPx, paddingPx);
-		
+
 		inflate(context, R.layout.item_message, this);
-		
+
 		mHeaderView = (CircularLoadImageView) findViewById(R.id.message_header);
 		mHeaderView.setOnClickListener(this);
 		mContentView = (TextView) findViewById(R.id.message_content);
 		mStateView = (ImageView) findViewById(R.id.message_state);
 		mMessageContainer = (ViewGroup) findViewById(R.id.message_container);
-		
+
 	}
 
 	@SuppressLint("NewApi")
 	public void setMessage(Message message, final boolean myself) {
 		mMessage = message;
 		mMyself = myself;
-		
+
 		mContentView.setText(mMessage.getMessage());
 		mUserHeaderLoader.load(mHeaderView, message.getFloginid());
-		
-		//设置消息底图
-		if(mMyself){
+
+		// 设置消息底图
+		if (mMyself) {
 			mMessageContainer.setBackgroundResource(R.drawable.message_item_right);
-		}else{
+		} else {
 			mMessageContainer.setBackgroundResource(R.drawable.message_item_left);
 		}
-		
-		//设置状态
-		if(mMessage.getState() == Constant.MESSAGE_STATE_SENDING){
+
+		// 设置状态
+		if (mMessage.getState() == Constant.MESSAGE_STATE_SENDING) {
 			mStateView.setVisibility(View.VISIBLE);
 			mStateView.setImageResource(R.drawable.loading);
-			
-		}else if(mMessage.getState() == Constant.MESSAGE_STATE_FAILD){
+
+		} else if (mMessage.getState() == Constant.MESSAGE_STATE_FAILD) {
 			mStateView.setVisibility(View.VISIBLE);
 			mStateView.setImageResource(R.drawable.warning);
-			
-		}else if(mMessage.getState() == Constant.MESSAGE_STATE_SENED){
+
+		} else if (mMessage.getState() == Constant.MESSAGE_STATE_SENED) {
 			mStateView.setVisibility(View.GONE);
 		}
 	}
@@ -133,14 +133,14 @@ public class MessageItem extends LinearLayout implements View.OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.message_header:
-			//点击头像启动个人信息
+			// 点击头像启动个人信息
 			String userid = null;
-			if(mMyself){
+			if (mMyself) {
 				userid = mMessage.getFloginid();
-			}else{
+			} else {
 				userid = mMessage.getTologinid();
 			}
-			Intent intent = new Intent(v.getContext(),PersonalInfoActivity.class);
+			Intent intent = new Intent(v.getContext(), PersonalInfoActivity.class);
 			intent.putExtra(PersonalInfoActivity.KEY_USERID, userid);
 			v.getContext().startActivity(intent);
 			break;
@@ -149,6 +149,5 @@ public class MessageItem extends LinearLayout implements View.OnClickListener{
 			break;
 		}
 	}
-	
-	
+
 }

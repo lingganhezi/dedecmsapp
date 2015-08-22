@@ -2,12 +2,14 @@ package com.lingganhezi.myapp.service;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
-
+import org.json.JSONArray;
+import org.json.JSONException;
 import com.android.volley.Request;
 import com.android.volley.Response.Listener;
+import com.google.gson.reflect.TypeToken;
 import com.lingganhezi.myapp.AppContext;
 import com.lingganhezi.myapp.Constant;
 import com.lingganhezi.myapp.HttpHelper;
@@ -18,7 +20,9 @@ import com.lingganhezi.myapp.entity.LoginUserInfo;
 import com.lingganhezi.myapp.entity.Place;
 import com.lingganhezi.myapp.entity.Respone;
 import com.lingganhezi.myapp.entity.UserInfo;
+import com.lingganhezi.myapp.net.ResultResponeListener;
 import com.lingganhezi.net.FileUploader;
+import com.lingganhezi.net.JsonArrayRequest;
 import com.lingganhezi.net.JsonObjectRequest;
 
 import android.content.ContentValues;
@@ -26,6 +30,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -42,6 +47,7 @@ public class UserService extends BaseService {
 	private final static String URL_GET_USER_INFO = Constant.SERVER_ADD + "/app/userInfo.php";
 	private final static String URL_UPDATE_USER_INFO = Constant.SERVER_ADD + "/app/userInfo.php";
 	private final static String URL_UPLOAD_USER_AVATAR = Constant.SERVER_ADD + "/app/userInfo_edit_avatar.php";
+	private final static String URL_FRIEND = Constant.SERVER_ADD + "/app/space.php";
 
 	/**
 	 * MSG 编号 200~300
@@ -52,6 +58,12 @@ public class UserService extends BaseService {
 	public final static int MSG_UPLOAD_USER_AVATR_FAILD = 211;
 	public final static int MSG_UPDATE_USERINFO_SUCCESS = 220;
 	public final static int MSG_UPDATE_USERINFO_FAILD = 221;
+	public final static int MSG_QUERY_UNFRIEND_SUCCESS = 230;
+	public final static int MSG_QUERY_UNFRIEND_FAILD = 231;
+	public final static int MSG_NEW_FRIEND_SUCCESS = 240;
+	public final static int MSG_NEW_FRIEND_FAILD = 241;
+	public final static int MSG_SYNC_FRIEND_SUCCESS = 250;
+	public final static int MSG_SYNC_FRIEND_FAILD = 251;
 
 	private static UserService instance;
 	private LoginUserInfo mCurrentLoginUser;
@@ -122,24 +134,19 @@ public class UserService extends BaseService {
 		params.put("action", "get");
 		params.put("userid", userid);
 
-		Request request = new JsonObjectRequest(URL_GET_USER_INFO, params, new Listener<JSONObject>() {
+		Request request = new JsonObjectRequest(URL_GET_USER_INFO, params, new ResultResponeListener() {
 
 			@Override
-			public void onResponse(JSONObject response) {
-				Respone result = (Respone) HttpHelper.getJsonObject(response, Respone.class);
-				Message msg = null;
-				if (result.stateCode == Constant.STATE_CODE_SUCCESS) {
-					msg = handler.obtainMessage(MSG_SYNC_USERINFO_SUCCESS);
-					UserInfo userinfo = (UserInfo) HttpHelper.getJsonObject(result.getData(), UserInfo.class);
-					// 把用户信息 放到消息中
-					msg.obj = userinfo;
-					// TODO 保存信息到本地数据库
-					saveUserInfoLocal(userinfo);
-				} else {
-					msg = handler.obtainMessage(MSG_SYNC_USERINFO_FAILD);
-				}
-				msg.getData().putString(MESSAGE_FALG, result.message);
-				handler.sendMessage(msg);
+			protected void handeResponeSuccess(Respone result) {
+				UserInfo userinfo = (UserInfo) HttpHelper.getJsonObject(result.getData(), UserInfo.class);
+				// TODO 保存信息到本地数据库
+				saveUserInfoLocal(userinfo);
+				sendHandlerMessage(handler, getMessage(MSG_UPDATE_USERINFO_SUCCESS, userinfo));
+			}
+
+			@Override
+			protected void handeResponeFaild(Respone result) {
+				sendHandlerMessage(handler, getMessage(MSG_SYNC_USERINFO_FAILD));
 			}
 
 		}, getErrorListener(handler));
@@ -153,7 +160,7 @@ public class UserService extends BaseService {
 	 * @param userinfo
 	 */
 	public void saveUserInfo(UserInfo userinfo) {
-		saveUserInfo(userinfo, new Handler());
+		saveUserInfo(userinfo, null);
 	}
 
 	/**
@@ -174,21 +181,17 @@ public class UserService extends BaseService {
 		params.put("email", userinfo.getEmail());
 		params.put("place", userinfo.getCity());
 
-		Request request = new JsonObjectRequest(URL_UPDATE_USER_INFO, params, new Listener<JSONObject>() {
+		Request request = new JsonObjectRequest(URL_UPDATE_USER_INFO, params, new ResultResponeListener() {
 
 			@Override
-			public void onResponse(JSONObject response) {
-				Respone result = (Respone) HttpHelper.getJsonObject(response, Respone.class);
-				Message msg = null;
-				if (result.stateCode == Constant.STATE_CODE_SUCCESS) {
-					msg = handler.obtainMessage(MSG_UPDATE_USERINFO_SUCCESS);
-				} else {
-					msg = handler.obtainMessage(MSG_UPDATE_USERINFO_FAILD);
-				}
-				msg.getData().putString(MESSAGE_FALG, result.message);
-				handler.sendMessage(msg);
+			protected void handeResponeSuccess(Respone result) {
+				sendHandlerMessage(handler, getMessage(MSG_UPDATE_USERINFO_SUCCESS));
 			}
 
+			@Override
+			protected void handeResponeFaild(Respone result) {
+				sendHandlerMessage(handler, getMessage(MSG_UPDATE_USERINFO_FAILD));
+			}
 		}, getErrorListener(handler));
 
 		getHttpRequesttQueue().add(request);
@@ -213,6 +216,7 @@ public class UserService extends BaseService {
 				values.put(UserInfoColumns.CITY, userinfo.getCity());
 				values.put(UserInfoColumns.DESCRIPTION, userinfo.getDescription());
 				values.put(UserInfoColumns.SEX, userinfo.getSex());
+				values.put(UserInfoColumns.ISFRIEND, userinfo.getIsFriend());
 
 				if (cursor.getCount() > 0) {
 					getContentResolver().update(uri, values, null, null);
@@ -246,6 +250,7 @@ public class UserService extends BaseService {
 		userInfo.setCity(cursor.getString(cursor.getColumnIndex(UserInfoColumns.CITY)));
 		userInfo.setDescription(cursor.getString(cursor.getColumnIndex(UserInfoColumns.DESCRIPTION)));
 		userInfo.setSex(cursor.getInt(cursor.getColumnIndex(UserInfoColumns.SEX)));
+		userInfo.setIsFriend(cursor.getInt(cursor.getColumnIndex(UserInfoColumns.ISFRIEND)));
 		return userInfo;
 	}
 
@@ -372,41 +377,188 @@ public class UserService extends BaseService {
 		params.put("action", "save");
 		params.put("userid", userid);
 
-		FileUploader.getInstance(mContext).upload(URL_UPLOAD_USER_AVATAR, files, params, new Listener<String>() {
+		FileUploader.getInstance(mContext).upload(URL_UPLOAD_USER_AVATAR, files, params, new ResultResponeListener() {
 
 			@Override
-			public void onResponse(String respone) {
+			protected void handeResponeSuccess(Respone result) {
+				Message msg = getMessage(MSG_UPLOAD_USER_AVATR_SUCCESS);
+				String avatarPath = null;
 				try {
-					Respone result = (Respone) HttpHelper.getJsonObject(new JSONObject(respone), Respone.class);
-					if (result.stateCode == Constant.STATE_CODE_SUCCESS) {
-						String avatarPath = result.getData().getString("avatar");
-						// 更新数据数据
-						UserInfo userInfo = getUserInfo(userid);
-						userInfo.setProtrait(avatarPath);
-						saveUserInfoLocal(userInfo);
-
-						// 更新正在登陆的用户数据
-						LoginUserInfo loginUserInfo = getCurrentLoginUser();
-						if (loginUserInfo == null || loginUserInfo.getUserId() != userid) {
-							Message msg = handler.obtainMessage(MSG_UPLOAD_USER_AVATR_FAILD);
-							msg.getData().putString(MESSAGE_FALG, mContext.getString(R.string.login_not_logined));
-							handler.sendMessage(msg);
-							return;
-						}
-						loginUserInfo.setUserInfo(userInfo);
-						handler.obtainMessage(MSG_UPLOAD_USER_AVATR_SUCCESS).sendToTarget();
-						;
-					} else {
-						Message msg = handler.obtainMessage(MSG_UPLOAD_USER_AVATR_FAILD);
-						msg.getData().putString(MESSAGE_FALG, result.message);
-						handler.sendMessage(msg);
-					}
-				} catch (Exception e) {
-					Log.w(TAG, e);
-					handler.obtainMessage(MSG_ERROR).sendToTarget();
+					avatarPath = result.getData().getString("avatar");
+				} catch (JSONException e) {
+					Log.e(TAG, "uploadAvatar error", e);
+					msg.what = MSG_UPLOAD_USER_AVATR_FAILD;
+					sendHandlerMessage(handler, msg);
 					return;
 				}
+
+				// 更新数据数据
+				UserInfo userInfo = getUserInfo(userid);
+				userInfo.setProtrait(avatarPath);
+				saveUserInfoLocal(userInfo);
+
+				// 更新正在登陆的用户数据
+				LoginUserInfo loginUserInfo = getCurrentLoginUser();
+				if (loginUserInfo == null || loginUserInfo.getUserId() != userid) {
+					msg.what = MSG_UPLOAD_USER_AVATR_FAILD;
+					msg.getData().putString(MESSAGE_FALG, mContext.getString(R.string.login_not_logined));
+					sendHandlerMessage(handler, msg);
+					return;
+				}
+				loginUserInfo.setUserInfo(userInfo);
+
+				sendHandlerMessage(handler, msg);
+			}
+
+			@Override
+			protected void handeResponeFaild(Respone result) {
+				Message msg = handler.obtainMessage(MSG_UPLOAD_USER_AVATR_FAILD);
+				msg.getData().putString(MESSAGE_FALG, result.message);
+				handler.sendMessage(msg);
 			}
 		}, getErrorListener(handler), Constant.HTTP_CONTENTTYPE_IMAGE_JPEG);
+	}
+
+	/**
+	 * 添加新朋友
+	 * 
+	 * @param userid
+	 * @param handler
+	 */
+	public void addNewfriend(final String userid, final Handler handler) {
+		Log.i(TAG, "#addNewfriend:" + userid);
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("action", "newfriend");
+		params.put("userid", userid);
+
+		Request request = new JsonObjectRequest(URL_FRIEND, params, new ResultResponeListener() {
+
+			@Override
+			protected void handeResponeSuccess(Respone result) {
+				Message msg = getMessage(MSG_NEW_FRIEND_SUCCESS);
+				// 更新用户状态
+				UserInfo userInfo = getUserInfo(userid);
+				if (userInfo != null) {
+					userInfo.setIsFriend(1);
+					saveUserInfo(userInfo);
+				}
+				sendHandlerMessage(handler, msg);
+			}
+
+			@Override
+			protected void handeResponeFaild(Respone result) {
+				sendHandlerMessage(handler, getMessage(MSG_NEW_FRIEND_FAILD));
+			}
+
+		}, getErrorListener(handler));
+
+		getHttpRequesttQueue().add(request);
+	}
+
+	/**
+	 * 查询服务器上 未关注的会员
+	 * 
+	 * </br>注意这个只能在主线程调用
+	 * 
+	 * @param username
+	 * @param handler
+	 */
+	public void serachUnfriend(final String username, final Handler handler) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("action", "listunfriend");
+		params.put("uname", username);
+		// 由于 listFirends封装了查询服务器上朋友列表 和非朋友列表的接口，所以这里 做个message转发
+		listFriends(params, new Handler(new Handler.Callback() {
+
+			@Override
+			public boolean handleMessage(Message msg) {
+				Message handleMessage = new Message();
+				handleMessage.obj = msg.obj;
+				handleMessage.setData(msg.getData());
+				switch (msg.what) {
+				case MSG_SYNC_FRIEND_SUCCESS:
+					handleMessage.what = MSG_QUERY_UNFRIEND_SUCCESS;
+					break;
+				default:
+					// 其他情况都为 失败
+					handleMessage.what = MSG_QUERY_UNFRIEND_FAILD;
+					break;
+				}
+				if (handler != null) {
+					handler.sendMessage(handleMessage);
+				}
+				return true;
+			}
+		}));
+	}
+
+	/**
+	 * 同步好友信息
+	 * 
+	 * @param handler
+	 */
+	public void syncFrieds(final Handler handler) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("action", "listfriend");
+		listFriends(params, handler);
+	}
+
+	/**
+	 * 查询服务器好友
+	 * 
+	 * @param params
+	 *            http请求参数
+	 * @param handler
+	 */
+	public void listFriends(Map<String, String> params, final Handler handler) {
+		LoginUserInfo currentUser = getCurrentLoginUser();
+		if (currentUser == null) {
+			// 未登陆
+			handler.obtainMessage(MSG_SYNC_FRIEND_FAILD);
+			return;
+		}
+
+		Request request = new JsonArrayRequest(URL_FRIEND, params, new Listener<JSONArray>() {
+
+			@Override
+			public void onResponse(JSONArray json) {
+
+				// 这里比较耗时 放入到 aysnctask中执行
+				AsyncTask handleTask = new AsyncTask<JSONArray, Integer, android.os.Message>() {
+
+					@Override
+					protected android.os.Message doInBackground(JSONArray... params) {
+						android.os.Message handlerMsg = null;
+						try {
+							JSONArray jsonarray = params[0];
+							List<UserInfo> users = HttpHelper.getJsonArray(jsonarray, new TypeToken<List<UserInfo>>() {
+							});
+							// 这改成批量修改？提高性能,或者不需要保存？
+							for (UserInfo user : users) {
+								saveUserInfo(user);
+							}
+
+							handlerMsg = handler.obtainMessage(MSG_SYNC_FRIEND_SUCCESS);
+							handlerMsg.obj = users;
+						} catch (Exception e) {
+							Log.e(TAG, "syncFriends error", e);
+							handlerMsg = handler.obtainMessage(MSG_SYNC_FRIEND_FAILD);
+						}
+						return handlerMsg;
+					}
+
+					@Override
+					protected void onPostExecute(android.os.Message result) {
+						result.sendToTarget();
+						super.onPostExecute(result);
+					}
+				};
+
+				handleTask.execute(new JSONArray[] { json });
+			}
+
+		}, getErrorListener(handler));
+
+		getHttpRequesttQueue().add(request);
 	}
 }

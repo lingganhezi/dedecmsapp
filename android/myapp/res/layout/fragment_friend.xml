@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <com.lingganhezi.myapp.ui.Topbar
+        style="@style/TopbarNoBackButton"
+        app:title="@string/friend_topbar_title" >
+
+        <ImageView
+            android:id="@+id/newfriend"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/icon_add" />
+    </com.lingganhezi.myapp.ui.Topbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <com.lingganhezi.ui.widget.PullRefreshGridLayout
+            android:id="@+id/friend_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@color/default_light_grey_color"
+            android:dividerHeight="1dp"
+            android:listSelector="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/friend_dialog"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:textSize="@dimen/font_size_title"
+            android:visibility="invisible" />
+
+        <com.lingganhezi.ui.widget.SortSideBar
+            android:id="@+id/friend_sidrbar"
+            android:layout_width="30dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|center"
+            android:layout_marginBottom="31dp"
+            android:layout_marginRight="2.5dp"
+            android:layout_marginTop="28dp" />
+    </FrameLayout>
+
+</LinearLayout>

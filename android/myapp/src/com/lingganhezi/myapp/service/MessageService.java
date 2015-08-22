@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.reflect.TypeToken;
@@ -19,6 +17,8 @@ import com.lingganhezi.myapp.MessageSessionProvider.MessageSessionColumns;
 import com.lingganhezi.myapp.entity.Message;
 import com.lingganhezi.myapp.entity.MessageSession;
 import com.lingganhezi.myapp.entity.Respone;
+import com.lingganhezi.myapp.net.ResultResponeListener;
+import com.lingganhezi.myapp.service.handler.BaseServiceHandler;
 import com.lingganhezi.myapp.service.handler.MessageQueryHandler;
 import com.lingganhezi.myapp.service.handler.MessageSyncHandler;
 import com.lingganhezi.net.JsonArrayRequest;
@@ -215,10 +215,9 @@ public class MessageService extends BaseService {
 
 			final String lastid = id;
 			// 同步服务器消息
-			syncMessage(lastid, new MessageSyncHandler(lastid, new MessageSyncHandler.MessageSyncCallback() {
-
+			syncMessage(lastid, new MessageSyncHandler(lastid, new BaseServiceHandler.Callback<String>() {
 				@Override
-				public void complate(boolean success, String msgid) {
+				public void complate(boolean success, String msgid, String message) {
 					if (success) {
 						// 同步完成后 查询本地消息并返回
 						Cursor c = queryPreMessage(time, sessionid);
@@ -296,7 +295,7 @@ public class MessageService extends BaseService {
 					}
 				};
 
-				handleTask.execute(new JSONArray[]{json});
+				handleTask.execute(new JSONArray[] { json });
 			}
 		}, getErrorListener(handler));
 		request.setShouldCache(false);
@@ -377,7 +376,18 @@ public class MessageService extends BaseService {
 	}
 
 	/**
-	 * 这个消息的 sessionid，如果本地没有这个session，就会创建一个 session 数据插入到本地
+	 * 获取这个用户对应的 sessionid，如果没有就会新增一条session记录
+	 * 
+	 * @param userid
+	 * @return
+	 */
+	public int getMessageSessionId(String userid) {
+		Message msg = buildSendMessage(userid, null);
+		return getMessageSessionId(msg);
+	}
+
+	/**
+	 * 获取这个消息的 sessionid，如果本地没有这个session，就会创建一个 session 数据插入到本地
 	 * 
 	 * @param msg
 	 * @return
@@ -504,39 +514,37 @@ public class MessageService extends BaseService {
 		params.put("action", "send");
 		params.put("msgtoid", msg.getTologinid() == null ? new String() : msg.getTologinid());
 		params.put("message", msg.getMessage() == null ? new String() : msg.getMessage());
-		Request request = new JsonObjectRequest(URL_SEND_MESSAGE, params, new Response.Listener<JSONObject>() {
+		Request request = new JsonObjectRequest(URL_SEND_MESSAGE, params, new ResultResponeListener() {
 
 			@Override
-			public void onResponse(JSONObject json) {
+			protected void handeResponeSuccess(Respone result) {
+				android.os.Message handlerMessage = getMessage();
+				try {
+					// 保存从服务器返回来的消息实体
+					Message retrunMessage = (Message) HttpHelper.getJsonObject(result.getData(), Message.class);
+					messageEntry.setMsgid(retrunMessage.getMsgid());
+					messageEntry.setFolder(retrunMessage.getFolder());
+					messageEntry.setSendtime(retrunMessage.getSendtime());
+					messageEntry.setSubject(retrunMessage.getSubject());
+					messageEntry.setHasview(retrunMessage.getHasview());
+					messageEntry.setState(Constant.MESSAGE_STATE_SENED);
 
-				Respone result = (Respone) HttpHelper.getJsonObject(json, Respone.class);
-
-				android.os.Message handlerMessage = null;
-				if (result.stateCode == Constant.STATE_CODE_SUCCESS) {
-					try {
-						// 保存从服务器返回来的消息实体
-						Message retrunMessage = (Message) HttpHelper.getJsonObject(result.getData(), Message.class);
-						messageEntry.setMsgid(retrunMessage.getMsgid());
-						messageEntry.setFolder(retrunMessage.getFolder());
-						messageEntry.setSendtime(retrunMessage.getSendtime());
-						messageEntry.setSubject(retrunMessage.getSubject());
-						messageEntry.setHasview(retrunMessage.getHasview());
-						messageEntry.setState(Constant.MESSAGE_STATE_SENED);
-
-						handlerMessage = handler.obtainMessage(MSG_SEND_MESSAGE_SUCCESS);
-					} catch (Exception e) {
-						Log.e(TAG, "send message  parse msgid error" + messageEntry);
-						handlerMessage = handler.obtainMessage(MSG_SEND_MESSAGE_FAILD);
-					}
-
-				} else {
-
-					messageEntry.setState(Constant.MESSAGE_STATE_FAILD);
-					handlerMessage = handler.obtainMessage(MSG_SEND_MESSAGE_FAILD);
-					Log.e(TAG, "send message error:" + messageEntry);
+					handlerMessage.what = MSG_SEND_MESSAGE_SUCCESS;
+				} catch (Exception e) {
+					Log.e(TAG, "send message  parse msgid error" + messageEntry);
+					handlerMessage.what = MSG_SEND_MESSAGE_FAILD;
 				}
 				saveMessage(messageEntry);
-				handlerMessage.sendToTarget();
+				handler.sendMessage(handlerMessage);
+			}
+
+			@Override
+			protected void handeResponeFaild(Respone result) {
+				android.os.Message handlerMessage = getMessage(MSG_SEND_MESSAGE_FAILD);
+				messageEntry.setState(Constant.MESSAGE_STATE_FAILD);
+				Log.e(TAG, "send message error:" + messageEntry);
+				saveMessage(messageEntry);
+				handler.sendMessage(handlerMessage);
 			}
 		}, getErrorListener(handler));
 		request.setShouldCache(false);

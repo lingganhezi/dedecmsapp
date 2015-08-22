@@ -81,8 +81,7 @@ public class BaseDataDBManager extends SQLiteOpenHelper {
 	 *            reports database corruption, or null to use the default error
 	 *            handler.
 	 */
-	public BaseDataDBManager(Context context, String name, CursorFactory factory, int version,
-			DatabaseErrorHandler errorHandler) {
+	public BaseDataDBManager(Context context, String name, CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
 		super(context, name, factory, version, errorHandler);
 		if (version < 1)
 			throw new IllegalArgumentException("Version must be >= 1, was " + version);
@@ -229,8 +228,8 @@ public class BaseDataDBManager extends SQLiteOpenHelper {
 			final int version = db.getVersion();
 			if (version != mNewVersion) {
 				if (db.isReadOnly()) {
-					throw new SQLiteException("Can't upgrade read-only database from version " + db.getVersion()
-							+ " to " + mNewVersion + ": " + mName);
+					throw new SQLiteException("Can't upgrade read-only database from version " + db.getVersion() + " to " + mNewVersion
+							+ ": " + mName);
 				}
 
 				db.beginTransaction();

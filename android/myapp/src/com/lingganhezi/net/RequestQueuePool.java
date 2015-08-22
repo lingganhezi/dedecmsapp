@@ -42,8 +42,7 @@ public class RequestQueuePool {
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
 	 */
-	public static int getRequestWattingCount(RequestQueue queue) throws IllegalAccessException,
-			IllegalArgumentException {
+	public static int getRequestWattingCount(RequestQueue queue) throws IllegalAccessException, IllegalArgumentException {
 		Map<String, Queue<Request<?>>> requestsMap = (Map<String, Queue<Request<?>>>) mWaitingRequestField.get(queue);
 		return requestsMap.size();
 	}

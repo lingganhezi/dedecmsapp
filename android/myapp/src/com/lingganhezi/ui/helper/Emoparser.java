@@ -37,22 +37,19 @@ public class Emoparser {
 	public static boolean isGifEmo = false;
 	private final int DEFAULT_SMILEY_TEXTS = R.array.default_emo_phrase;
 	private final int YAYA_EMO_TEXTS = R.array.yaya_emo_phrase;
-	private final int[] DEFAULT_EMO_RES_IDS = { R.drawable.tt_e0, R.drawable.tt_e1, R.drawable.tt_e2, R.drawable.tt_e3,
-			R.drawable.tt_e4, R.drawable.tt_e5, R.drawable.tt_e6, R.drawable.tt_e7, R.drawable.tt_e8, R.drawable.tt_e9,
-			R.drawable.tt_e10, R.drawable.tt_e11, R.drawable.tt_e12, R.drawable.tt_e13, R.drawable.tt_e14,
-			R.drawable.tt_e15, R.drawable.tt_e16, R.drawable.tt_e17, R.drawable.tt_e18, R.drawable.tt_e19,
-			R.drawable.tt_e20, R.drawable.tt_e21, R.drawable.tt_e22, R.drawable.tt_e23, R.drawable.tt_e24,
-			R.drawable.tt_e25, R.drawable.tt_e26, R.drawable.tt_e27, R.drawable.tt_e28, R.drawable.tt_e29,
-			R.drawable.tt_e30, R.drawable.tt_e31, R.drawable.tt_e32, R.drawable.tt_e33, R.drawable.tt_e34,
-			R.drawable.tt_e35, R.drawable.tt_e36, R.drawable.tt_e37, R.drawable.tt_e38, R.drawable.tt_e39,
-			R.drawable.tt_e40, R.drawable.tt_e41, R.drawable.tt_e42, R.drawable.tt_e43, R.drawable.tt_e44,
-			R.drawable.tt_e45 };
+	private final int[] DEFAULT_EMO_RES_IDS = { R.drawable.tt_e0, R.drawable.tt_e1, R.drawable.tt_e2, R.drawable.tt_e3, R.drawable.tt_e4,
+			R.drawable.tt_e5, R.drawable.tt_e6, R.drawable.tt_e7, R.drawable.tt_e8, R.drawable.tt_e9, R.drawable.tt_e10, R.drawable.tt_e11,
+			R.drawable.tt_e12, R.drawable.tt_e13, R.drawable.tt_e14, R.drawable.tt_e15, R.drawable.tt_e16, R.drawable.tt_e17,
+			R.drawable.tt_e18, R.drawable.tt_e19, R.drawable.tt_e20, R.drawable.tt_e21, R.drawable.tt_e22, R.drawable.tt_e23,
+			R.drawable.tt_e24, R.drawable.tt_e25, R.drawable.tt_e26, R.drawable.tt_e27, R.drawable.tt_e28, R.drawable.tt_e29,
+			R.drawable.tt_e30, R.drawable.tt_e31, R.drawable.tt_e32, R.drawable.tt_e33, R.drawable.tt_e34, R.drawable.tt_e35,
+			R.drawable.tt_e36, R.drawable.tt_e37, R.drawable.tt_e38, R.drawable.tt_e39, R.drawable.tt_e40, R.drawable.tt_e41,
+			R.drawable.tt_e42, R.drawable.tt_e43, R.drawable.tt_e44, R.drawable.tt_e45 };
 
-	private final int[] YAYA_EMO_RES_IDS = { R.drawable.tt_yaya_e1, R.drawable.tt_yaya_e2, R.drawable.tt_yaya_e3,
-			R.drawable.tt_yaya_e4, R.drawable.tt_yaya_e5, R.drawable.tt_yaya_e6, R.drawable.tt_yaya_e7,
-			R.drawable.tt_yaya_e8, R.drawable.tt_yaya_e9, R.drawable.tt_yaya_e10, R.drawable.tt_yaya_e11,
-			R.drawable.tt_yaya_e12, R.drawable.tt_yaya_e13, R.drawable.tt_yaya_e14, R.drawable.tt_yaya_e15,
-			R.drawable.tt_yaya_e16, R.drawable.tt_yaya_e17, R.drawable.tt_yaya_e18, R.drawable.tt_yaya_e19 };
+	private final int[] YAYA_EMO_RES_IDS = { R.drawable.tt_yaya_e1, R.drawable.tt_yaya_e2, R.drawable.tt_yaya_e3, R.drawable.tt_yaya_e4,
+			R.drawable.tt_yaya_e5, R.drawable.tt_yaya_e6, R.drawable.tt_yaya_e7, R.drawable.tt_yaya_e8, R.drawable.tt_yaya_e9,
+			R.drawable.tt_yaya_e10, R.drawable.tt_yaya_e11, R.drawable.tt_yaya_e12, R.drawable.tt_yaya_e13, R.drawable.tt_yaya_e14,
+			R.drawable.tt_yaya_e15, R.drawable.tt_yaya_e16, R.drawable.tt_yaya_e17, R.drawable.tt_yaya_e18, R.drawable.tt_yaya_e19 };
 
 	public int[] getResIdList() {
 		return DEFAULT_EMO_RES_IDS;

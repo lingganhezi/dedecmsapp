@@ -26,12 +26,12 @@ public class UserSyncHandler extends Handler {
 	public void handleMessage(Message msg) {
 		switch (msg.what) {
 		case UserService.MSG_SYNC_USERINFO_SUCCESS:
-			if(mSyncCallback != null){
+			if (mSyncCallback != null) {
 				mSyncCallback.complate(true, UserService.getInstance().getUserInfo(mUserid));
 			}
 			break;
 		default:
-			if(mSyncCallback != null){
+			if (mSyncCallback != null) {
 				mSyncCallback.complate(false, null);
 			}
 			break;

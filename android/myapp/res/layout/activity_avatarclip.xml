@@ -12,7 +12,7 @@
             android:id="@+id/clip_button"
             style="@style/TopbarButton"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="@dimen/topbar_paddingRight"
             android:text="@string/avatar_clip" />
     </com.lingganhezi.myapp.ui.Topbar>
 

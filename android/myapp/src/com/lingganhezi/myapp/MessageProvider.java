@@ -24,11 +24,10 @@ public class MessageProvider extends BaseProvider {
 	}
 
 	public static String getCreateSql() {
-		return "CREATE TABLE " + TABLE_NAME + "(" + MessageColumns._ID + " INTEGER PRIMARY KEY," + MessageColumns.MSGID
-				+ " INTEGER," + MessageColumns.FLOGINID + " TEXT," + MessageColumns.TOLOGINID + " TEXT,"
-				+ MessageColumns.FOLDER + " TEXT," + MessageColumns.SUBJECT + " TEXT," + MessageColumns.SENDTIME
-				+ " INTEGER," + MessageColumns.WRITETIME + " INTEGER," + MessageColumns.HASVIEW + " INTEGER,"
-				+ MessageColumns.ISADMIN + " INTEGER," + MessageColumns.SESSIONID + " INTEGER,"
+		return "CREATE TABLE " + TABLE_NAME + "(" + MessageColumns._ID + " INTEGER PRIMARY KEY," + MessageColumns.MSGID + " INTEGER,"
+				+ MessageColumns.FLOGINID + " TEXT," + MessageColumns.TOLOGINID + " TEXT," + MessageColumns.FOLDER + " TEXT,"
+				+ MessageColumns.SUBJECT + " TEXT," + MessageColumns.SENDTIME + " INTEGER," + MessageColumns.WRITETIME + " INTEGER,"
+				+ MessageColumns.HASVIEW + " INTEGER," + MessageColumns.ISADMIN + " INTEGER," + MessageColumns.SESSIONID + " INTEGER,"
 				+ MessageColumns.MESSAGE + " TEXT," + MessageColumns.STATE + " INTEGER" + "); ";
 	}
 

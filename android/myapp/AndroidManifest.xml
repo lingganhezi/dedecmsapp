@@ -81,7 +81,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
             android:screenOrientation="sensorPortrait" >
         </activity>
-         <activity
+        <activity
             android:name="com.lingganhezi.myapp.ui.activity.MessageActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
             android:screenOrientation="sensorPortrait" >
@@ -91,6 +91,11 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/DialogTheme" >
+        </activity>
+        <activity
+            android:name="com.lingganhezi.myapp.ui.activity.QueryFriendActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize"
+            android:screenOrientation="sensorPortrait" >
         </activity>
 
         <provider

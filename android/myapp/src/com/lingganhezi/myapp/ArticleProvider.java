@@ -19,10 +19,10 @@ public class ArticleProvider extends BaseProvider {
 	}
 
 	public static String getCreateSql() {
-		return "CREATE TABLE " + TABLENAME + "(" + ArticleColumns._ID + " INTEGER PRIMARY KEY," + ArticleColumns.TITLE
-				+ " TEXT," + ArticleColumns.DESCRIPTION + " TEXT," + ArticleColumns.THUMBNAIL + " TEXT,"
-				+ ArticleColumns.CONTENT + " TEXT," + ArticleColumns.SUBMIT_DATE + " LONG," + ArticleColumns.TYPE
-				+ " INTEGER," + ArticleColumns.URL + " TEXT," + ArticleColumns.GET_DATE + " LONG" + "); ";
+		return "CREATE TABLE " + TABLENAME + "(" + ArticleColumns._ID + " INTEGER PRIMARY KEY," + ArticleColumns.TITLE + " TEXT,"
+				+ ArticleColumns.DESCRIPTION + " TEXT," + ArticleColumns.THUMBNAIL + " TEXT," + ArticleColumns.CONTENT + " TEXT,"
+				+ ArticleColumns.SUBMIT_DATE + " LONG," + ArticleColumns.TYPE + " INTEGER," + ArticleColumns.URL + " TEXT,"
+				+ ArticleColumns.GET_DATE + " LONG" + "); ";
 	}
 
 	@Override

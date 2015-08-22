@@ -132,8 +132,7 @@ public class ClipZoomImageView extends ImageView implements OnScaleGestureListen
 
 			final float currentScale = getScale();
 			// 如果值在合法范围内，继续缩放
-			if (((tmpScale > 1f) && (currentScale < mTargetScale))
-					|| ((tmpScale < 1f) && (mTargetScale < currentScale))) {
+			if (((tmpScale > 1f) && (currentScale < mTargetScale)) || ((tmpScale < 1f) && (mTargetScale < currentScale))) {
 				ClipZoomImageView.this.postDelayed(this, 16);
 			} else
 			// 设置为目标的缩放比例
@@ -355,8 +354,7 @@ public class ClipZoomImageView extends ImageView implements OnScaleGestureListen
 		Matrix m = new Matrix();
 		m.setScale(scale, scale);
 
-		return Bitmap.createBitmap(bitmap, mHorizontalPadding, mVerticalPadding, targetBitmapLength,
-				targetBitmapLength, m, true);
+		return Bitmap.createBitmap(bitmap, mHorizontalPadding, mVerticalPadding, targetBitmapLength, targetBitmapLength, m, true);
 	}
 
 	/**

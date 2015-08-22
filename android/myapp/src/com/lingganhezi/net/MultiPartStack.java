@@ -38,8 +38,7 @@ public class MultiPartStack extends HurlStack {
 	private final static String HEADER_CONTENT_TYPE = "Content-Type";
 
 	@Override
-	public HttpResponse performRequest(Request<?> request, Map<String, String> additionalHeaders) throws IOException,
-			AuthFailureError {
+	public HttpResponse performRequest(Request<?> request, Map<String, String> additionalHeaders) throws IOException, AuthFailureError {
 
 		if (!(request instanceof MultiPartRequest)) {
 			return super.performRequest(request, additionalHeaders);
@@ -54,8 +53,8 @@ public class MultiPartStack extends HurlStack {
 		}
 	}
 
-	public HttpResponse performMultiPartRequest(Request<?> request, Map<String, String> additionalHeaders)
-			throws IOException, AuthFailureError {
+	public HttpResponse performMultiPartRequest(Request<?> request, Map<String, String> additionalHeaders) throws IOException,
+			AuthFailureError {
 		HttpUriRequest httpRequest = createMultiPartRequest(request, additionalHeaders);
 		addHeaders(httpRequest, additionalHeaders);
 		addHeaders(httpRequest, request.getHeaders());
@@ -72,8 +71,7 @@ public class MultiPartStack extends HurlStack {
 		return httpClient.execute(httpRequest);
 	}
 
-	static HttpUriRequest createMultiPartRequest(Request<?> request, Map<String, String> additionalHeaders)
-			throws AuthFailureError {
+	static HttpUriRequest createMultiPartRequest(Request<?> request, Map<String, String> additionalHeaders) throws AuthFailureError {
 		switch (request.getMethod()) {
 		case Method.DEPRECATED_GET_OR_POST: {
 			// This is the deprecated way that needs to be handled for backwards
@@ -135,8 +133,7 @@ public class MultiPartStack extends HurlStack {
 	 * @param request
 	 * @throws AuthFailureError
 	 */
-	private static void setMultiPartBody(HttpEntityEnclosingRequestBase httpRequest, Request<?> request)
-			throws AuthFailureError {
+	private static void setMultiPartBody(HttpEntityEnclosingRequestBase httpRequest, Request<?> request) throws AuthFailureError {
 
 		// Return if Request is not MultiPartRequest
 		if (!(request instanceof MultiPartRequest)) {

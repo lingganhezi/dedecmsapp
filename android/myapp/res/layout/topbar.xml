@@ -3,7 +3,7 @@
 
     <ImageView
         android:id="@+id/topbar_back"
-        android:layout_width="40dp"
+        android:layout_width="@dimen/topbar_backbtn_width"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
