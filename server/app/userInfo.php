@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__)."/../member/config.php");
+require_once(dirname(__FILE__)."/config.php");
 require_once (dirname(__FILE__) . '/result.class.php');
 require_once (dirname(__FILE__) . '/userInfo.class.php');
 require_once (DEDEINC . '/userlogin.class.php');
@@ -17,26 +17,21 @@ if ($action == 'get') {
     			ON (#@__member_person.mid = #@__member.mid) 
     			WHERE #@__member.userid = '$userid'";
     $row = $db->GetOne($sql);
+	
+	//getisfriend
+	$friendquery = "SELECT id FROM #@__member_friends WHERE mid='{$cfg_ml->M_ID}' AND floginid = '$userid'";
+	$friends = $db->GetOne($friendquery);
+	if(is_array($friends)){
+		$row['isFriend'] = 1;
+	}else{
+		$row['isFriend'] = 0;
+	}
+	
     if(!is_array($row)){
     	sendResult(CODE_FAILD,'找不到这个用户');
 	}else{
-		
-		//性别处理
-		switch($row['sex']){
-			case '男':
-				$row['sex'] = 0;
-				break;
-			case '女':
-				$row['sex'] = 1;
-				break;
-			case '保密':
-				$row['sex'] = -1;
-				break;
-		}
-		
-		
-		$userinfo = new UserInfo($row['userid'],$row['userid'],$row['email'],$cfg_basehost.$row['face'],
-					$row['birthday'],$row['place'],$row['lovemsg'],$row['sex']);	
+		$userinfo = getUserInfo($row);
+			
 		sendResult(CODE_SUCCESS,'',$userinfo);
 	}
 }
