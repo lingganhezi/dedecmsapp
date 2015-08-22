@@ -83,7 +83,7 @@ else if ($action == 'send') {
 	$subject = '';
 	$msg = CheckUserID($msgtoid, "用户名", false);
 	if ($msg != 'ok') {
-		sendResult(CODE_FAILD, $msg, "-1");
+		sendResult(CODE_FAILD, "此用户不接受消息");
 	}
 	$row = $dsql -> GetOne("SELECT * FROM `#@__member` WHERE userid LIKE '$msgtoid' ");
 	if (!is_array($row)) {
