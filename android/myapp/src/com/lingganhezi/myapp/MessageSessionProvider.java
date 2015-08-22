@@ -10,10 +10,12 @@ public class MessageSessionProvider extends BaseProvider {
 	public static class MessageSessionColumns {
 		public static final String _ID = BaseColumns._ID;
 		public static final String USERID = "USERID";
+		public static final String OWNER = "OWNER";
 	}
 
 	public static String getCreateSql() {
 		return "CREATE TABLE " + TABLE_NAME + "(" + MessageSessionColumns._ID + " INTEGER PRIMARY KEY," + MessageSessionColumns.USERID
+				+ " TEXT, "+ MessageSessionColumns.OWNER
 				+ " TEXT" + "); ";
 	}
 

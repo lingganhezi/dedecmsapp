@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.google.gson.reflect.TypeToken;
@@ -14,6 +15,7 @@ import com.lingganhezi.myapp.Constant;
 import com.lingganhezi.myapp.HttpHelper;
 import com.lingganhezi.myapp.MessageProvider.MessageColumns;
 import com.lingganhezi.myapp.MessageSessionProvider.MessageSessionColumns;
+import com.lingganhezi.myapp.entity.LoginUserInfo;
 import com.lingganhezi.myapp.entity.Message;
 import com.lingganhezi.myapp.entity.MessageSession;
 import com.lingganhezi.myapp.entity.Respone;
@@ -107,13 +109,15 @@ public class MessageService extends BaseService {
 		MessageSession session = new MessageSession();
 		session.setId(cursor.getInt(cursor.getColumnIndex(MessageSessionColumns._ID)));
 		session.setUserid(cursor.getString(cursor.getColumnIndex(MessageSessionColumns.USERID)));
+		session.setOwner(cursor.getString(cursor.getColumnIndex(MessageSessionColumns.OWNER)));
 		return session;
 	}
 
 	public Cursor queryMessageSession() {
 		// TODO 实现查询
 		String orderBy = MessageSessionColumns._ID + " DESC LIMIT " + mQueryCount;
-		Cursor cursor = mContentResolver.query(Constant.CONTENT_URI_MESSAGE_SESSION_PROVIDER, null, null, null, orderBy);
+		Cursor cursor = mContentResolver.query(Constant.CONTENT_URI_MESSAGE_SESSION_PROVIDER, null, MessageSessionColumns.OWNER + "=?",
+				new String[] { UserService.getInstance().getCurrentLoginUserId() }, orderBy);
 		return cursor;
 	}
 
@@ -133,7 +137,9 @@ public class MessageService extends BaseService {
 	private boolean hasPreMessage(long time, int sessionid) {
 		String orderBy = MessageColumns.SENDTIME + " ASC ";
 		Cursor cursor = mContentResolver.query(Constant.CONTENT_URI_MESSAGE_PROVIDER, null, MessageColumns.SENDTIME + "<? AND "
-				+ MessageColumns.SESSIONID + "=?", new String[] { String.valueOf(time), String.valueOf(sessionid) }, orderBy);
+				+ MessageColumns.SESSIONID + "=? AND " + MessageSessionColumns.OWNER + "=?",
+				new String[] { String.valueOf(time), String.valueOf(sessionid), UserService.getInstance().getCurrentLoginUserId() },
+				orderBy);
 		boolean hasPre = cursor.getCount() > 0;
 		cursor.close();
 		return hasPre;
@@ -406,12 +412,18 @@ public class MessageService extends BaseService {
 		} else {
 			targetUserId = String.valueOf(msg.getTologinid());
 		}
+		// 获取当前登录用户id
+		String currentUserId = UserService.getInstance().getCurrentLoginUserId();
+		
 		Cursor sessionCursor = mContentResolver.query(Constant.CONTENT_URI_MESSAGE_SESSION_PROVIDER, null, MessageSessionColumns.USERID
-				+ "=?", new String[] { targetUserId }, null);
+				+ "=? AND "+MessageSessionColumns.OWNER+"=?", new String[] { targetUserId,currentUserId }, null);
 		if (sessionCursor != null) {
 			if (sessionCursor.getCount() == 0) {
+
+				
 				ContentValues values = new ContentValues();
 				values.put(MessageSessionColumns.USERID, targetUserId);
+				values.put(MessageSessionColumns.OWNER, currentUserId);
 				Uri resultUri = mContentResolver.insert(Constant.CONTENT_URI_MESSAGE_SESSION_PROVIDER, values);
 				if (resultUri != null) {
 					try {
@@ -560,7 +572,7 @@ public class MessageService extends BaseService {
 	 */
 	public Message buildSendMessage(String targetUserId, String msg) {
 		Message message = new Message();
-		message.setFloginid(UserService.getInstance().getCurrentLoginUser().getUserId());
+		message.setFloginid(UserService.getInstance().getCurrentLoginUserId());
 		message.setTologinid(targetUserId);
 		message.setMessage(msg);
 		message.setFolder(Constant.MESSAGE_BOX_OUTBOX);

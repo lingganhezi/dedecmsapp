@@ -114,6 +114,18 @@ public class UserService extends BaseService {
 	}
 
 	/**
+	 * 获取当前登录用户的id
+	 * 如果没有登录就返回一个空字符串
+	 * @return
+	 */
+	public String getCurrentLoginUserId(){
+		if(getCurrentLoginUser() != null){
+			return getCurrentLoginUser().getUserId();
+		}else{
+			return "";
+		}
+	}
+	/**
 	 * 获取当前登陆用户
 	 * 
 	 * @return
@@ -514,7 +526,11 @@ public class UserService extends BaseService {
 		LoginUserInfo currentUser = getCurrentLoginUser();
 		if (currentUser == null) {
 			// 未登陆
-			handler.obtainMessage(MSG_SYNC_FRIEND_FAILD);
+			if(handler != null){
+				Message msg = handler.obtainMessage(MSG_SYNC_FRIEND_FAILD);
+				msg.getData().putString(MESSAGE_FALG, mContext.getString(R.string.login_not_logined));
+				handler.sendMessage(msg);
+			}
 			return;
 		}
 

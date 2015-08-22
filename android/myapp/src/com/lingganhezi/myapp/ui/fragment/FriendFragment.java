@@ -5,6 +5,7 @@ import com.lingganhezi.myapp.Constant;
 import com.lingganhezi.myapp.R;
 import com.lingganhezi.myapp.UserInfoProvider.UserInfoColumns;
 import com.lingganhezi.myapp.entity.UserInfo;
+import com.lingganhezi.myapp.service.LoginService;
 import com.lingganhezi.myapp.service.MessageService;
 import com.lingganhezi.myapp.service.UserService;
 import com.lingganhezi.myapp.service.handler.UserFriendHandler;
@@ -196,6 +197,10 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 	 * @param userinfo
 	 */
 	private void startMessageActivity(UserInfo userinfo) {
+		if(!LoginService.getInstance().isLogined()){
+			mBaseActivity.showToast(R.string.login_not_logined);
+			return;
+		}
 		// 获取messageSession
 		int sessionid = MessageService.getInstance().getMessageSessionId(userinfo.getId());
 		Intent intent = new Intent(getActivity(), MessageActivity.class);
