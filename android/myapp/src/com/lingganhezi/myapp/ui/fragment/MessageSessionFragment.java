@@ -77,7 +77,9 @@ public class MessageSessionFragment extends BaseFragment {
 			// 获取头像
 			if (targetUser != null) {
 				holder.header.setImageUrl(targetUser.getProtrait(), mImageLoader);
+				holder.name.setText(targetUser.getName());
 			} else {
+				//TODO 这个 会有延时操作，会不会有bug？过了一段时间后这个 hodler 已经不是 这个userinfo了
 				// 数据库中不存在开始同步信息
 				mUserService.syncUserInfo(targetUserId, new UserSyncHandler(targetUserId, new UserSyncHandler.SyncCallback() {
 
@@ -85,14 +87,13 @@ public class MessageSessionFragment extends BaseFragment {
 					public void complate(boolean succes, UserInfo userInfo) {
 						if (succes) {
 							holder.header.setImageUrl(userInfo.getProtrait(), mImageLoader);
+							holder.name.setText(userInfo.getName());
 						} else {
 							// TODO 获取头像失败时的动作，重试？
 						}
 					}
 				}));
 			}
-
-			holder.name.setText(targetUser.getName());
 			
 			// 获取最后的消息
 			com.lingganhezi.myapp.entity.Message lastMessage = MessageService.getInstance().getLastMessage(session);
