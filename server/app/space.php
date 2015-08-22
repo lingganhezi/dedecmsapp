@@ -71,7 +71,7 @@ else if ($action == 'listfriend') {
  -------------------------------------*/
 else if ($action == 'newfriend') {
 	CheckRank(0, 0);
-	if ($userid == $cfg_ml -> M_ID) {
+	if ($userid == $cfg_ml -> M_LoginID) {
 		sendResult(CODE_FAILD, "你不能加自己为好友！");
 	}
 	$addtime = time();
@@ -108,7 +108,7 @@ else if ($action == 'newfriend') {
  -------------------------------------*/
 else if ($action == 'delfriend') {
 	CheckRank(0, 0);
-	if ($userid == $cfg_ml -> M_ID) {
+	if ($userid == $cfg_ml -> M_LoginID) {
 		sendResult(CODE_FAILD, "你不能和自己为解除关系！");
 	}
 	$addtime = time();
