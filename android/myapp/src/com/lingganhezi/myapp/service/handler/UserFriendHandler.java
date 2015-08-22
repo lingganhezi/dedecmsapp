@@ -26,6 +26,7 @@ public class UserFriendHandler extends BaseServiceHandler {
 		case UserService.MSG_NEW_FRIEND_SUCCESS:
 		case UserService.MSG_SYNC_FRIEND_SUCCESS:
 			callCallback(msg, true);
+			break;
 		default:
 			callCallback(msg, false);
 			break;
