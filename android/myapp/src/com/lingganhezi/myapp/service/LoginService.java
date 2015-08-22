@@ -83,19 +83,6 @@ public class LoginService extends BaseService {
 		Request request = new JsonObjectRequest(LOGIN_URL, params, new ResultResponeListener() {
 
 			@Override
-			public void onResponse(JSONObject response) {
-				Respone result = (Respone) HttpHelper.getJsonObject(response, Respone.class);
-				Message msg = null;
-				if (result.stateCode == Constant.STATE_CODE_SUCCESS) {
-
-				} else {
-					msg = handler.obtainMessage(MSG_LOGIN_FAILD);
-					msg.getData().putString(MESSAGE_FALG, result.message);
-					handler.sendMessage(msg);
-				}
-			}
-
-			@Override
 			protected void handeResponeSuccess(Respone result) {
 				final Message msg = getMessage(MSG_LOGIN_SUCCESS);
 
@@ -234,6 +221,11 @@ public class LoginService extends BaseService {
 			// 因为本地有数据先运行 “离线登陆”
 			final UserService userService = getServiceManager().getUserService();
 			UserInfo userInfo = userService.getUserInfo(loginConfig.getUserId());
+			if(userInfo == null){
+				//当本地数据库没有找到这个用户数据的时候，不自动登录
+				return;
+			}
+			
 			loginConfig.setUserInfo(userInfo);
 			userService.setCurrentLoginUser(loginConfig);
 

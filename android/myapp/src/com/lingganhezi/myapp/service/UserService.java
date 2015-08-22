@@ -141,7 +141,7 @@ public class UserService extends BaseService {
 				UserInfo userinfo = (UserInfo) HttpHelper.getJsonObject(result.getData(), UserInfo.class);
 				// TODO 保存信息到本地数据库
 				saveUserInfoLocal(userinfo);
-				sendHandlerMessage(handler, getMessage(MSG_UPDATE_USERINFO_SUCCESS, userinfo));
+				sendHandlerMessage(handler, getMessage(MSG_SYNC_USERINFO_SUCCESS, userinfo));
 			}
 
 			@Override
