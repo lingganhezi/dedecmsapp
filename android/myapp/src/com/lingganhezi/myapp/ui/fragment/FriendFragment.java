@@ -16,6 +16,7 @@ import com.lingganhezi.ui.widget.CircularLoadImageView;
 import com.lingganhezi.ui.widget.PullRefreshGridLayout;
 import com.lingganhezi.ui.widget.SortSideBar;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -26,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -77,7 +79,7 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 		mSortSideBar.setOnTouchingLetterChangedListener(this);
 	}
 
-	public class FriendAdapter extends CursorAdapter implements SectionIndexer, AdapterView.OnItemLongClickListener {
+	public class FriendAdapter extends CursorAdapter implements SectionIndexer, View.OnLongClickListener{
 
 		public FriendAdapter() {
 			super(getActivity(), getActivity().getContentResolver().query(Constant.CONTENT_URI_USERINFO_PROVIDER, null,
@@ -112,19 +114,13 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 		@Override
 		public int getSectionForPosition(int position) {
 			Cursor cursor = (Cursor) getItem(position);
-			return cursor.getString(cursor.getColumnIndex(UserInfoColumns.NAME)).toUpperCase().charAt(0);
-		}
-
-		@Override
-		public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-			Object object = getItem(position);
-			if (object instanceof UserInfo) {
-				UserInfo userInfo = (UserInfo) object;
-				// TODO 处理长按
+			try {
+				return cursor.getString(cursor.getColumnIndex(UserInfoColumns.NAME)).toUpperCase().charAt(0);
+			} catch (Exception e) {
 			}
-			return true;
+			return " ".charAt(0);
 		}
-
+		
 		private class ItemHolder {
 			CircularLoadImageView header;
 			TextView name;
@@ -151,7 +147,15 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 
 			holder.header.setOnClickListener(FriendFragment.this);
 			convertView.setOnClickListener(FriendFragment.this);
+			convertView.setOnLongClickListener(this);
 			return convertView;
+		}
+
+		@Override
+		public boolean onLongClick(View v) {
+			UserInfo userInfo = (UserInfo) v.getTag(R.id.tag_bind_data);
+			showDelFriendDialog(userInfo);
+			return true;
 		}
 
 	}
@@ -172,18 +176,25 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 			// 点击头像打开个人信息
 			startPersoninfoActivity((UserInfo) v.getTag(R.id.tag_bind_data));
 			break;
+		case R.id.delfriend:
+			//删除好友
+			//关闭dialog
+			mFriendControlDialog.dismiss();
+			
+			delFirend((UserInfo)v.getTag());
+			break;
 		default:
 			break;
 		}
 	}
-
+	
 	/**
 	 * 下拉更新去获取最新的好友信息
 	 */
 	@Override
 	public void update(PullRefreshGridLayout view, boolean pullDownToRefresh) {
 		if (pullDownToRefresh) {
-			mUserService.syncFrieds(new UserFriendHandler(new UserFriendHandler.Callback() {
+			mUserService.syncFrieds( new UserFriendHandler(new UserFriendHandler.Callback() {
 
 				@Override
 				public void complate(boolean success, Object entry, String message) {
@@ -220,6 +231,52 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 		mSortSideBar.setSelection(String.valueOf(witchLetter));
 	}
 
+	private Dialog mFriendControlDialog;
+	
+	private Dialog getFriendControlDialog(){
+		if(mFriendControlDialog == null){
+			mFriendControlDialog = new Dialog(getActivity(),R.style.DialogTheme);
+		}	
+		return mFriendControlDialog;
+	}
+	
+	/**
+	 * 显示删除好友对话框
+	 * @param userinfo
+	 */
+	private void showDelFriendDialog(UserInfo userinfo){
+		Dialog friendControlDialog = getFriendControlDialog();
+		
+		friendControlDialog.setCancelable(true);
+		friendControlDialog.setContentView(R.layout.dialog_friend_control);
+		View delBtn = friendControlDialog.findViewById(R.id.delfriend);
+		delBtn.setOnClickListener(this);
+		delBtn.setTag(userinfo);
+		friendControlDialog.show();
+	}
+	
+	/**
+	 * 删除好友
+	 * @param userinfo
+	 */
+	private void delFirend(UserInfo userinfo){
+		showProgressDialog(getString(R.string.friend_deleting));
+		
+		mUserService.delFriend(userinfo.getId(),  new UserFriendHandler(new UserFriendHandler.Callback() {
+
+			@Override
+			public void complate(boolean success, Object entry, String message) {
+				if (!success) {
+					if (TextUtils.isEmpty(message)) {
+						message = getString(R.string.friend_del_faild);
+					}
+					mBaseActivity.showToast(message);
+				}
+				dismissDialog();
+			}
+		}));
+	}
+	
 	/**
 	 * 启动消息对话activity
 	 * 
@@ -246,5 +303,13 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 		Intent intent = new Intent(getActivity(), PersonalInfoActivity.class);
 		intent.putExtra(PersonalInfoActivity.KEY_USERID, userinfo.getId());
 		startActivity(intent);
+	}
+	
+	@Override
+	public void onDestroy() {
+		if(mFriendControlDialog != null){
+			mFriendControlDialog.dismiss();
+		}
+		super.onDestroy();
 	}
 }

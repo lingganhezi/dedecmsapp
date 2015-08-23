@@ -64,7 +64,9 @@ public class UserService extends BaseService {
 	public final static int MSG_NEW_FRIEND_FAILD = 241;
 	public final static int MSG_SYNC_FRIEND_SUCCESS = 250;
 	public final static int MSG_SYNC_FRIEND_FAILD = 251;
-
+	public final static int MSG_DEL_FRIEND_SUCCESS = 260;
+	public final static int MSG_DEL_FRIEND_FAILD = 261;
+	
 	private static UserService instance;
 	private LoginUserInfo mCurrentLoginUser;
 
@@ -474,6 +476,44 @@ public class UserService extends BaseService {
 		getHttpRequesttQueue().add(request);
 	}
 
+	/**
+	 * 删除好友
+	 * @param userid
+	 * @param handler
+	 */
+	public void delFriend(final String userid,final Handler handler){
+		//检查登录
+		if(!checkLogin(handler)){
+			return;
+		}
+		
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("action", "delfriend");
+		params.put("userid", userid);
+
+		Request request = new JsonObjectRequest(URL_FRIEND, params, new ResultResponeListener() {
+
+			@Override
+			protected void handeResponeSuccess(Respone result) {
+				Message msg = getMessage(MSG_DEL_FRIEND_SUCCESS);
+				// 更新用户状态
+				UserInfo userInfo = getUserInfo(userid);
+				if (userInfo != null) {
+					userInfo.setIsFriend(0);
+					saveUserInfo(userInfo);
+				}
+				sendHandlerMessage(handler, msg);
+			}
+
+			@Override
+			protected void handeResponeFaild(Respone result) {
+				sendHandlerMessage(handler, getMessage(MSG_DEL_FRIEND_FAILD));
+			}
+
+		}, getErrorListener(handler));
+
+		getHttpRequesttQueue().add(request);
+	}
 	/**
 	 * 查询服务器上 未关注的会员
 	 * 

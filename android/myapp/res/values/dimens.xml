@@ -30,4 +30,7 @@
     
     <!-- editor -->
     <dimen name="editor_dialog_width">350dp</dimen>
+    
+    <!-- friend -->
+    <dimen name="friend_control_dialog_width">250dp</dimen>
 </resources>

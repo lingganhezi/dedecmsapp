@@ -117,6 +117,9 @@
     <!-- 好友 -->
     <string name="friend_topbar_title">好友</string>
     <string name="friend_sync_faild">好友列表同步失败</string>
+    <string name="friend_del">删除好友</string>
+    <string name="friend_deleting">好友删除中...</string>
+    <string name="friend_del_faild">好友删除失败</string>
     
     <!-- 查找 -->
     <string name="queryfriend_topbar_title">找朋友</string>

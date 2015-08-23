@@ -25,6 +25,7 @@ public class UserFriendHandler extends BaseServiceHandler {
 		case UserService.MSG_QUERY_UNFRIEND_SUCCESS:
 		case UserService.MSG_NEW_FRIEND_SUCCESS:
 		case UserService.MSG_SYNC_FRIEND_SUCCESS:
+		case UserService.MSG_DEL_FRIEND_SUCCESS:
 			callCallback(msg, true);
 			break;
 		default:
