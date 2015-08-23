@@ -7,6 +7,8 @@ import com.lingganhezi.myapp.entity.UserInfo;
 import com.lingganhezi.myapp.service.BaseService;
 import com.lingganhezi.myapp.service.MessageService;
 import com.lingganhezi.myapp.service.UserService;
+import com.lingganhezi.myapp.service.handler.BaseServiceHandler;
+import com.lingganhezi.myapp.service.handler.MessageSyncHandler;
 import com.lingganhezi.myapp.service.handler.UserSyncHandler;
 import com.lingganhezi.myapp.ui.activity.MessageActivity;
 import com.lingganhezi.ui.widget.LoadImageView;
@@ -25,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.support.v4.widget.CursorAdapter;
+import android.text.TextUtils;
 
 public class MessageSessionFragment extends BaseFragment {
 	private String TAG = MessageSessionFragment.class.getSimpleName();
@@ -149,24 +152,21 @@ public class MessageSessionFragment extends BaseFragment {
 			}
 		}
 
-		private Handler mRefreshHandler = new Handler(new Handler.Callback() {
+		private Handler mRefreshHandler =new MessageSyncHandler(null, new BaseServiceHandler.Callback() {
 
 			@Override
-			public boolean handleMessage(Message msg) {
-				switch (msg.what) {
-				case BaseService.MSG_ERROR:
-				case MessageService.MSG_SYNC_MESSAGE_FAILD:
-					mBaseActivity.showToast(R.string.message_refresh_error);
-					break;
-				case MessageService.MSG_SYNC_MESSAGE_SUCCESS:
+			public void complate(boolean success, Object entry, String message) {
+				if(success){
 					mSessionAdapter.notifyDataSetChanged();
-					break;
-				default:
-					break;
+				}else{
+					if(TextUtils.isEmpty(message)){
+						message = getString(R.string.message_refresh_error);
+					}
+					mBaseActivity.showToast(message);
 				}
 				mSessionList.onRefreshComplete();
-				return true;
 			}
-		});
+		}) ;
+			
 	};
 }

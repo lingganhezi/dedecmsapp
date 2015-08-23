@@ -551,19 +551,26 @@ public class UserService extends BaseService {
 							for (UserInfo user : users) {
 								saveUserInfo(user);
 							}
-
-							handlerMsg = handler.obtainMessage(MSG_SYNC_FRIEND_SUCCESS);
-							handlerMsg.obj = users;
+							if(handler != null){
+								handlerMsg = new Message();
+								handlerMsg.what = MSG_SYNC_FRIEND_SUCCESS;
+								handlerMsg.obj = users;
+							}
 						} catch (Exception e) {
 							Log.e(TAG, "syncFriends error", e);
-							handlerMsg = handler.obtainMessage(MSG_SYNC_FRIEND_FAILD);
+							if(handler != null){
+								handlerMsg = new Message();
+								handlerMsg.what = MSG_SYNC_FRIEND_FAILD;
+							}
 						}
 						return handlerMsg;
 					}
 
 					@Override
 					protected void onPostExecute(android.os.Message result) {
-						result.sendToTarget();
+						if(handler != null){
+							handler.sendMessage(result);
+						}
 						super.onPostExecute(result);
 					}
 				};
@@ -574,5 +581,14 @@ public class UserService extends BaseService {
 		}, getErrorListener(handler));
 
 		getHttpRequesttQueue().add(request);
+	}
+	
+	/**
+	 * 把本地所有userinfo 的isfriend设置成false，一般用在注销时，防止再好友列表中出现
+	 */
+	public void clearFreindRelationship(){
+		ContentValues values = new ContentValues();
+		values.put(UserInfoColumns.ISFRIEND, 0);
+		getContentResolver().update(Constant.CONTENT_URI_USERINFO_PROVIDER, values, null, null);
 	}
 }

@@ -262,6 +262,11 @@ public class MessageService extends BaseService {
 	 * @param handler
 	 */
 	public void syncMessage(final String msgid, final Handler handler) {
+		//检查登录
+		if(!checkLogin(handler)){
+			return;
+		}
+		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("action", "list");
 		// TODO 不拉取所有列表只拉取 某个msgid 以后的 数据

@@ -31,16 +31,14 @@ import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
 
 /**
- * MultipartRequest - To handle the large file uploads. Extended from
- * JSONRequest. You might want to change to StringRequest based on your response
- * type.
  * 
- * @author Mani Selvaraj
+ * @author chenzipeng
  *
+ * @param <T>
  */
-public class MultiPartStringRequest extends Request<String> implements MultiPartRequest {
+public abstract class  CustomMultiPartRequest<T> extends Request implements MultiPartRequest {
 
-	private final Listener<String> mListener;
+	protected final Listener<T> mListener;
 	/* To hold the parameter name and the File to upload */
 	private Map<String, File> fileUploads = new HashMap<String, File>();
 
@@ -59,7 +57,7 @@ public class MultiPartStringRequest extends Request<String> implements MultiPart
 	 * @param errorListener
 	 *            Error listener, or null to ignore errors
 	 */
-	public MultiPartStringRequest(int method, String url, Listener<String> listener, ErrorListener errorListener) {
+	public CustomMultiPartRequest(int method, String url, Listener<T> listener, ErrorListener errorListener) {
 		super(method, url, errorListener);
 		mListener = listener;
 	}
@@ -88,24 +86,6 @@ public class MultiPartStringRequest extends Request<String> implements MultiPart
 	@Override
 	public Map<String, String> getStringUploads() {
 		return stringUploads;
-	}
-
-	@Override
-	protected Response<String> parseNetworkResponse(NetworkResponse response) {
-		String parsed;
-		try {
-			parsed = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-		} catch (UnsupportedEncodingException e) {
-			parsed = new String(response.data);
-		}
-		return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response));
-	}
-
-	@Override
-	protected void deliverResponse(String response) {
-		if (mListener != null) {
-			mListener.onResponse(response);
-		}
 	}
 
 	/**

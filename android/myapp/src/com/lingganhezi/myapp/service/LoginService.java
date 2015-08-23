@@ -84,8 +84,12 @@ public class LoginService extends BaseService {
 
 			@Override
 			protected void handeResponeSuccess(Respone result) {
+				//登录成功后，后台更新好友列表信息
+				UserService.getInstance().syncFrieds(null);
+				
 				final Message msg = getMessage(MSG_LOGIN_SUCCESS);
 
+				//更新当前登录用户的个人信息
 				getServiceManager().getUserService().syncUserInfo(username, new Handler(new Handler.Callback() {
 
 					@Override
@@ -133,6 +137,8 @@ public class LoginService extends BaseService {
 			// TODO 注销,需要调用服务器接口？
 			getServiceManager().getUserService().setCurrentLoginUser(null);
 			ConfigHelper.getInstance().cleanCookie();
+			//清空好友关系
+			UserService.getInstance().clearFreindRelationship();
 			handler.sendMessage(handler.obtainMessage(MSG_LOGOUT_SUCCESS));
 		}
 	}

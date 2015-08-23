@@ -47,28 +47,31 @@ public class SortSideBar extends View {
 		int height = getHeight();// 获取对应高度
 		int width = getWidth(); // 获取对应宽度
 		int singleHeight = height / (b.length + 1);// 获取每一个字母的高度
-
+		
+		int searchIconHeight = 0;
+		
 		if (b.length > 0) {
 			BitmapDrawable bmpDraw = (BitmapDrawable) getResources().getDrawable(R.drawable.side_search);
 			Bitmap bmp = bmpDraw.getBitmap();
-			float left = width / 2 - paint.measureText(b[0]) / 2 - 4;
+			searchIconHeight = bmp.getHeight();
+			float left = width / 2 - bmp.getWidth() / 2;
 			canvas.drawBitmap(bmp, left, 0, paint);
 		}
 
 		for (int i = 0; i < b.length; i++) {
-			paint.setColor(Color.parseColor("#666666"));
+			paint.setColor(getResources().getColor(R.color.default_black_color));
 			// paint.setTypeface(Typeface.DEFAULT_BOLD);
 			paint.setAntiAlias(true);
 
-			paint.setTextSize(21);
+			paint.setTextSize(singleHeight - 8);
 			// 选中的状态
 			if (i == sel) {
-				paint.setColor(Color.WHITE);
+				paint.setColor(getResources().getColor(R.color.default_blue_color));
 				paint.setFakeBoldText(true);
 			}
 			// x坐标等于中间-字符串宽度的一半.
 			float xPos = width / 2 - paint.measureText(b[i]) / 2;
-			float yPos = singleHeight * i + singleHeight + singleHeight / 2;
+			float yPos = searchIconHeight + singleHeight * i  + singleHeight ;
 
 			canvas.drawText(b[i], xPos, yPos, paint);
 			paint.reset();
@@ -87,7 +90,7 @@ public class SortSideBar extends View {
 		switch (action) {
 		case MotionEvent.ACTION_UP:
 			setBackgroundDrawable(new ColorDrawable(0x00000000));
-			sel = -1;//
+			//sel = -1;//
 			invalidate();
 			if (textDialog != null) {
 				textDialog.setVisibility(View.INVISIBLE);
@@ -124,4 +127,20 @@ public class SortSideBar extends View {
 		public void onTouchingLetterChanged(String s);
 	}
 
+	/**
+	 * 设置选择
+	 * 
+	 * @param witchChar
+	 *            那个字符？
+	 */
+	public void setSelection(String witchChar) {
+		for (int i = 0; i < b.length; i++) {
+			if (b[i].equals(witchChar.toUpperCase())) {
+				sel = i;
+				invalidate();
+				return;
+			}
+		}
+		sel = -1;
+	}
 }

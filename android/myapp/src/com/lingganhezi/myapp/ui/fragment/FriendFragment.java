@@ -25,11 +25,15 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-public class FriendFragment extends BaseFragment implements View.OnClickListener, PullRefreshGridLayout.UpdateDataExecutable {
+public class FriendFragment extends BaseFragment implements View.OnClickListener, PullRefreshGridLayout.UpdateDataExecutable,
+		SortSideBar.OnTouchingLetterChangedListener,OnScrollListener{
 	private View mMainView;
 	private PullRefreshGridLayout mFriendList;
 	private TextView mSideDialog;
@@ -69,6 +73,8 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 		mFriendList.setAdapter(mFriendAdapter);
 		mFriendList.setUpdateDataExecutable(this);
 		mFriendList.setMode(Mode.PULL_DOWN_TO_REFRESH);
+		mFriendList.setOnScrollListener(this);
+		mSortSideBar.setOnTouchingLetterChangedListener(this);
 	}
 
 	public class FriendAdapter extends CursorAdapter implements SectionIndexer, AdapterView.OnItemLongClickListener {
@@ -83,6 +89,9 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 			return new Object[0];
 		}
 
+		/**
+		 * @param 实际为char的值
+		 */
 		@Override
 		public int getPositionForSection(int section) {
 			Cursor cursor = getCursor();
@@ -91,7 +100,7 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 			while (cursor.moveToNext()) {
 
 				String name = cursor.getString(cursor.getColumnIndex(UserInfoColumns.NAME));
-				if (section == name.charAt(0)) {
+				if (section <= name.toUpperCase().charAt(0)) {
 					return index;
 				}
 
@@ -102,9 +111,8 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 
 		@Override
 		public int getSectionForPosition(int position) {
-			Cursor cursor = getCursor();
-			cursor.move(position);
-			return cursor.getString(cursor.getColumnIndex(UserInfoColumns.NAME)).charAt(0);
+			Cursor cursor = (Cursor) getItem(position);
+			return cursor.getString(cursor.getColumnIndex(UserInfoColumns.NAME)).toUpperCase().charAt(0);
 		}
 
 		@Override
@@ -191,13 +199,34 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 		}
 	}
 
+
+	@Override
+	public void onTouchingLetterChanged(String letter) {
+		int pos =  mFriendAdapter.getPositionForSection(letter.charAt(0));
+		mFriendList.getRefreshableView().setSelection(pos);
+	}
+
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		//没有需要做的动作
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		int itempos = firstVisibleItem ;
+		int witchLetterInt = mFriendAdapter.getSectionForPosition(itempos);
+		char witchLetter = (char) witchLetterInt;
+		mSortSideBar.setSelection(String.valueOf(witchLetter));
+	}
+
 	/**
 	 * 启动消息对话activity
 	 * 
 	 * @param userinfo
 	 */
 	private void startMessageActivity(UserInfo userinfo) {
-		if(!LoginService.getInstance().isLogined()){
+		if (!LoginService.getInstance().isLogined()) {
 			mBaseActivity.showToast(R.string.login_not_logined);
 			return;
 		}
@@ -218,5 +247,4 @@ public class FriendFragment extends BaseFragment implements View.OnClickListener
 		intent.putExtra(PersonalInfoActivity.KEY_USERID, userinfo.getId());
 		startActivity(intent);
 	}
-
 }
