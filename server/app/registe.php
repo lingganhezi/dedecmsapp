@@ -45,7 +45,7 @@ $mtype = '个人';
 $safeanswer = HtmlReplace($safeanswer);
 $safequestion = HtmlReplace($safequestion);
 $sex = '男';
-$spaceSta = ($cfg_mb_spacesta < 0 ? $cfg_mb_spacesta : 0);
+$spaceSta = 2;
 //头像
 $face = "/app/avatar.png";
 

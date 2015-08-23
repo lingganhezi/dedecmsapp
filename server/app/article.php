@@ -5,6 +5,11 @@ require_once (dirname(__FILE__) . '/article.class.php');
 require_once(DEDEINC.'/arc.archives.class.php');
 if(empty($action))$action = '';
 
+function startsWith($haystack, $needle) {
+    // search backwards starting from haystack length characters from the end
+    return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+}
+
 if($action == 'getList'){
 	global $cfg_basehost;
 
@@ -22,10 +27,15 @@ if($action == 'getList'){
     {
     	$articleData = new Archives($row['id']);
 		$content;
+		
+		if(!startsWith($articleData->Fields['litpic'],"http://") && !startsWith($articleData->Fields['litpic'],"https://")){
+				$articleData->Fields['litpic'] = $cfg_basehost.$articleData->Fields['litpic'];
+		}
+
 		$article = new Article($articleData->ArcID,
 			$articleData->Fields['title'],
 			$articleData->Fields['description'],
-			$cfg_basehost.$articleData->Fields['litpic'],
+			$articleData->Fields['litpic'],
 			$content,
 			$articleData->Fields['pubdate'],
 			$articleData->Fields['channel'],//这里的type 是 channel属性

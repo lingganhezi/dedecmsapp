@@ -8,7 +8,7 @@ $pwd = $password;
 if ($action == 'login') {
 		//检查帐号
         $rs = $cfg_ml->CheckUser($userid,$pwd);  
-        
+        $spacesta = 2;//状态
         #api{{
         if(defined('UC_API') && @include_once DEDEROOT.'/uc_client/client.php')
         {
@@ -24,7 +24,7 @@ if ($action == 'login') {
                     $money = is_array($row) ? $row['money'] : 0;
                     $logintime = $jointime = time();
                     $loginip = $joinip = GetIP();
-					$spacesta = 2;//状态
+					
                     $res = $dsql->ExecuteNoneQuery("INSERT INTO #@__member SET `mtype`='个人',`userid`='$username',`pwd`='$password',`uname`='$username',`sex`='男' ,`rank`='10',`money`='$money', `email`='$email', `scores`='$scores', `matt`='0', `face`='',`safequestion`='0',`safeanswer`='', `jointime`='$jointime',`joinip`='$joinip',`logintime`='$logintime',`loginip`='$loginip',`spacesta`=`$spacesta`;");
                     if($res) {
                         $mid = $dsql->GetLastID();
@@ -54,10 +54,16 @@ if ($action == 'login') {
                 if($rs) {
                     $row = $dsql->GetOne("SELECT `email` FROM #@__member WHERE userid='$userid'");                    
                     $uid = uc_user_register($userid, $pwd, $row['email']);
-                    if($uid > 0) $ucsynlogin = uc_user_synlogin($uid);
+                    if($uid > 0) {
+                    	$ucsynlogin = uc_user_synlogin($uid);
+						//更新 最新状态
+						$sql = "UPDATE #@__member SET `spacesta`=`$spacesta` WHERE `mid`=`$uid`";
+						$dsql->ExecuteNoneQuery($sql);
+					}
                 } else {
                     $rs = -1;
                 }
+				
             } else {
                 $rs = -1;
             }
