@@ -38,6 +38,8 @@ public class CircleMenuLayout extends ViewGroup {
 		innerRadius = a.getDimensionPixelSize(R.styleable.CircleMenuLayout_innerRadius, innerRadius);
 
 		mMenuCount = a.getInt(R.styleable.CircleMenuLayout_menuCount, mMenuCount);
+		
+		mAngle = a.getInt(R.styleable.CircleMenuLayout_angle, mMenuCount);
 	}
 
 	@Override

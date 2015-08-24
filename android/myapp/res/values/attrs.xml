@@ -26,6 +26,8 @@
         <!-- 内圈半径 -->
         <attr name="innerRadius"  format="dimension"/>
         <!-- 一圈多少个-->
-        <attr name="menuCount"  format="integer"/>
+        <attr name="menuCount"  format="integer"/>  
+        <!-- 角度-->
+        <attr name="angle"  format="integer"/>
     </declare-styleable>
 </resources>
