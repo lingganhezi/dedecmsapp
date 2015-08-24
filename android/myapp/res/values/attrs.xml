@@ -21,4 +21,11 @@
     <declare-styleable name="ClipImageLayout">
         <attr name="horizontalPadding"  format="dimension"/>
     </declare-styleable>
+    
+    <declare-styleable name="CircleMenuLayout">
+        <!-- 内圈半径 -->
+        <attr name="innerRadius"  format="dimension"/>
+        <!-- 一圈多少个-->
+        <attr name="menuCount"  format="integer"/>
+    </declare-styleable>
 </resources>
